@@ -55,6 +55,8 @@
 		<module>module-dynamic</module>
 		<module>module-metadata</module>
 		<module>module-common</module>
+		<module>module-wechat</module>
+		<module>module-template</module>
 	</modules>
 
 	 <dependencyManagement>
