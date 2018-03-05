@@ -25,6 +25,8 @@ public interface BaseRepo<T,I extends Serializable> extends PagingAndSortingRepo
 
     /**
      * 自定义返回值的查询
+     * 返回值查询优化
+     * 需要配合修改实体的构造函数
      * @param spec
      * @param pageable
      * @param select

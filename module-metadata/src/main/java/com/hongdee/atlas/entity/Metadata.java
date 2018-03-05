@@ -2,6 +2,7 @@ package com.hongdee.atlas.entity;
 
 import com.hongdee.atlas.common.constant.Constant;
 import com.hongdee.atlas.common.jpa.entity.BaseEntity;
+import com.hongdee.atlas.metadata.mysql.KeyType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,6 +24,18 @@ public class Metadata extends BaseEntity{
 
     @Basic
     private String type;
+
+    @Basic
+    private Boolean nullable;
+
+    @Basic
+    private String defaultVal;
+
+    /**
+     * 键类型，
+     */
+    @Enumerated(EnumType.STRING)
+    private KeyType keyType;
 
     @JoinColumn(name = "r_metadata_group")
     @ManyToOne(fetch = FetchType.LAZY)

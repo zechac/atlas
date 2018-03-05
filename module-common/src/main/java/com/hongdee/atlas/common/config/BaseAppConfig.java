@@ -1,5 +1,6 @@
 package com.hongdee.atlas.common.config;
 
+import com.hongdee.atlas.common.sql.SqlTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import com.hongdee.atlas.common.convert.StringToDateConverter;
 import com.hongdee.atlas.common.jpa.query.MapQueryBuilder;
 import com.hongdee.atlas.common.jpa.query.StringMapQueryBuilder;
 
+import javax.sql.DataSource;
 import java.util.Date;
 
 /**
@@ -21,6 +23,9 @@ import java.util.Date;
 public class BaseAppConfig {
     @Autowired
     Environment environment;
+
+    @Autowired
+    private DataSource dataSource;
 
     @Bean
     public ConversionService conversionService(){
@@ -46,6 +51,11 @@ public class BaseAppConfig {
         return stringMapQueryBuilder;
     }
 
+
+    @Bean
+    public SqlTemplate sqlTemplate(){
+        return new SqlTemplate(dataSource);
+    }
     /**
      * 自定义MapQueryBuilder
      * @return

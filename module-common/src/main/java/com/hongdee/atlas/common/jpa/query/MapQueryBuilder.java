@@ -13,7 +13,7 @@ import java.util.Map;
  linkedHashMap.put("data","data$EQ$AND_2");
  linkedHashMap.put("data1","data1$EQ$AND_2");
  linkedHashMap.put("data2","data2$NOTNULL$OR_2");
- linkedHashMap.put("type3","testTypeEntity_INNER.type1.name$NOTNULL$OR_2");
+ linkedHashMap.put("type3","testTypeEntity_INNER__type1__name$NOTNULL$OR_2");
  linkedHashMap.put("type3e","testTypeEntity$EQ");
  linkedHashMap.put("ANDT","data$EQ$AND_1");
  linkedHashMap.put("idNotNull","id$NOTNULL");
@@ -29,8 +29,8 @@ import java.util.Map;
  linkedHashMap.put("enumEQ","testEnum$EQ");
  linkedHashMap.put("data2EQ","data2Ori$EQ");
  linkedHashMap.put("data2Like","data2Ori$LIKE");
- linkedHashMap.put("typeName","testTypeEntity.name$EQ");
- linkedHashMap.put("typeName1","testTypeEntity.name1$EQ");
+ linkedHashMap.put("typeName","testTypeEntity__name$EQ");
+ linkedHashMap.put("typeName1","testTypeEntity__name1$EQ");
  */
 public interface MapQueryBuilder<T> {
     /**

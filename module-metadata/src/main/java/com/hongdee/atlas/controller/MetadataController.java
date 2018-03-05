@@ -92,7 +92,27 @@ public class MetadataController {
      */
     @RequestMapping("delete/{id}")
     public JsonResponse delete(@PathVariable String id){
-        metadataService.deleteById(id);
+        metadataService.delete(id);
+        return JsonResponse.success();
+    }
+
+    /**
+     * 刷新元数据
+     * @return
+     */
+    @RequestMapping("flush/{groupId}")
+    public JsonResponse flush(@PathVariable String groupId){
+        metadataService.flush(groupId);
+        return JsonResponse.success();
+    }
+
+    /**
+     * 刷新元数据组
+     * @return
+     */
+    @RequestMapping("group/flush")
+    public JsonResponse flushGroup(){
+        metadataGroupService.flush();
         return JsonResponse.success();
     }
 }
