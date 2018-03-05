@@ -95,7 +95,10 @@ public class StringMapQueryBuilder extends AbstractMapQueryBuilder {
         String[] split=key.split(SPLIT_CONDITON);
         Path condition =findQueryPath(split[0],root);
         Object testCondition=val;
-        QueryCondition queryCondition = QueryCondition.valueOf(split[1]);
+        QueryCondition queryCondition=QueryCondition.EQ;
+        if(split.length>1) {
+            queryCondition = QueryCondition.valueOf(split[1]);
+        }
         Predicate predicate = null;
         if(!QueryCondition.IN.equals(queryCondition)) {
             testCondition=checkAndConvertElementType(val,condition);

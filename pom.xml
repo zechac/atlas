@@ -57,6 +57,7 @@
 		<module>module-common</module>
 		<module>module-wechat</module>
 		<module>module-template</module>
+		<module>module-RBAC</module>
 	</modules>
 
 	 <dependencyManagement>

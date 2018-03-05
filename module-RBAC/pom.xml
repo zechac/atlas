@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.hongdee.atlas</groupId>
-	<artifactId>spring-web-server</artifactId>
+	<artifactId>module-RBAC</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>基础应用web服务器</name>
-	<description>基于spring boot的基础应用web服务器</description>
+	<name>RBAC模块</name>
+	<description>RBAC模块</description>
 
 	<!-- Inherit defaults from Spring Boot -->
 	<parent>
@@ -25,37 +25,18 @@
 	</properties>
 
 	<dependencies>
-	<dependency>
-			<groupId>com.hongdee.atlas</groupId>
-			<artifactId>module-RBAC</artifactId>
-			<version>${module.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>com.hongdee.atlas</groupId>
 			<artifactId>module-common</artifactId>
 			<version>${module.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.hongdee.atlas</groupId>
-			<artifactId>module-metadata</artifactId>
-			<version>${module.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- mysql驱动 -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -66,12 +47,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.4.0</version>
-			<scope>runtime</scope>
 		</dependency>
 		<!--query dsl-->
 		<dependency>
@@ -84,18 +59,11 @@
 			<scope>provided</scope>
 		</dependency>
 		<!--query dsl end-->
-		
-		<!-- alibaba druid 数据库连接池 -->
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/cn.guoyukun.jdbc/oracle-ojdbc6 -->
-		<dependency>
-			<groupId>cn.guoyukun.jdbc</groupId>
-			<artifactId>oracle-ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -114,18 +82,6 @@
 							<outputDirectory>target/generated-sources</outputDirectory>
 							<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>1.5.3.RELEASE</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>
