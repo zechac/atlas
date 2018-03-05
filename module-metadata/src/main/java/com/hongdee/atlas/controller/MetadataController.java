@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,9 +36,9 @@ public class MetadataController {
      * @return
      */
     @RequestMapping("group/list")
-    public JsonResponse groupList(Pageable pageable,@RequestParam Map param){
+    public JsonResponse groupList(Pageable pageable,@RequestParam Map param,String[] select){
        Map query= RequestParamUtils.mapRequestParam(param,"s_");
-       Page<MetadataGroup> metadataGroups= metadataGroupService.queryByPage(query,pageable);
+       Page<MetadataGroup> metadataGroups= metadataGroupService.queryByPage(query,pageable,select);
        return JsonResponse.success().Data(metadataGroups);
     }
 

@@ -17,5 +17,5 @@ public class IDEntity extends SuperEntity{
     @GeneratedValue(generator = "generatedkey")
     @GenericGenerator(name = "generatedkey", strategy = "uuid")
     @Column(length=32)
-    private String id;
+    protected String id;
 }

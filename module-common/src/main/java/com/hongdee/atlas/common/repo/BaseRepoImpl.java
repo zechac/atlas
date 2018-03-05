@@ -113,14 +113,14 @@ public class BaseRepoImpl<T,ID extends Serializable> extends SimpleJpaRepository
         Root<T> root = query.from(domainClass);
         if(select!=null&&select.length>0){
             buildSelect(query,root,select);
+        }else {
+            query.select(root);
         }
         Predicate predicate = spec.toPredicate(root, query, builder);
 
         if (predicate != null) {
             query.where(predicate);
         }
-
-        query.select(root);
 
         if (sort != null) {
             query.orderBy(toOrders(sort, root, builder));

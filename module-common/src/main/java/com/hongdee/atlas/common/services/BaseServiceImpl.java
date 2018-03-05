@@ -199,6 +199,11 @@ public abstract class BaseServiceImpl<K extends SuperEntity,T extends BaseRepo> 
         return entityDao.findAll(specifications,pageable);
     }
 
+    public Page<K> queryByPage(Map conditions,Pageable pageable,String... select){
+        Specification specifications=buildSpecification(conditions);
+        return entityDao.queryByPage(specifications,pageable,select);
+    }
+
     public K queryOne(Map conditions){
         Specification specifications=buildSpecification(conditions);
         return (K)entityDao.findOne(specifications);

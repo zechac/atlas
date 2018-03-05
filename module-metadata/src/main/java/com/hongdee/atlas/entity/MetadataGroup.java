@@ -3,7 +3,10 @@ package com.hongdee.atlas.entity;
 
 import com.hongdee.atlas.common.constant.Constant;
 import com.hongdee.atlas.common.jpa.entity.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +16,13 @@ import java.util.List;
 @Data
 @Cacheable
 @Entity
+@NoArgsConstructor
 public class MetadataGroup extends BaseEntity{
+
+    public MetadataGroup(String id,String name){
+        this.id=id;
+        this.name=name;
+    }
 
     @Basic
     private String name;
