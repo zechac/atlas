@@ -20,9 +20,7 @@ import java.util.Date;
  */
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public class BaseAppConfig {
-    @Autowired
-    Environment environment;
+public abstract class BaseAppConfig {
 
     @Autowired
     private DataSource dataSource;

@@ -25,9 +25,19 @@
 	</properties>
 
 	<dependencies>
-	<dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.hongdee.atlas</groupId>-->
+			<!--<artifactId>module-RBAC</artifactId>-->
+			<!--<version>${module.version}</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>com.hongdee.atlas</groupId>-->
+			<!--<artifactId>module-metadata</artifactId>-->
+			<!--<version>${module.version}</version>-->
+		<!--</dependency>-->
+		<dependency>
 			<groupId>com.hongdee.atlas</groupId>
-			<artifactId>module-RBAC</artifactId>
+			<artifactId>module-template</artifactId>
 			<version>${module.version}</version>
 		</dependency>
 		<dependency>
@@ -35,11 +45,7 @@
 			<artifactId>module-common</artifactId>
 			<version>${module.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.hongdee.atlas</groupId>
-			<artifactId>module-metadata</artifactId>
-			<version>${module.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
@@ -50,15 +56,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<!-- mysql驱动 -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
@@ -66,35 +63,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>2.4.0</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!--query dsl-->
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<!--query dsl end-->
-		
-		<!-- alibaba druid 数据库连接池 -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/cn.guoyukun.jdbc/oracle-ojdbc6 -->
-		<dependency>
-			<groupId>cn.guoyukun.jdbc</groupId>
-			<artifactId>oracle-ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
 		</dependency>
 	</dependencies>
 

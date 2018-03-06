@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-public class BaseWebConfig extends WebMvcConfigurerAdapter {
+public abstract class BaseWebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     Environment environment;

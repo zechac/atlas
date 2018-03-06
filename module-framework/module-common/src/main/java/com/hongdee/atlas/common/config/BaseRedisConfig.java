@@ -9,7 +9,7 @@ import org.springframework.core.env.Environment;
  * Created by hua on 2016/10/14.
  */
 @Configuration
-public class BaseRedisConfig {
+public abstract class BaseRedisConfig {
     @Autowired
     private Environment environment;
     /*

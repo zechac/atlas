@@ -5,9 +5,10 @@ import com.hongdee.atlas.common.config.BaseJpaConfig;
 import com.hongdee.atlas.common.repo.BaseRepoImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories(basePackages = {"com.hongdee.atlas.repo"},
+@EnableJpaRepositories(basePackages = {"com.hongdee.atlas.repo","com.hongdee.atlas.demo.repo"},
         entityManagerFactoryRef="primaryEntityManagerFactory",
         transactionManagerRef = "primaryTransactionManager",
         repositoryBaseClass = BaseRepoImpl.class

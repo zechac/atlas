@@ -16,7 +16,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @Configuration
 @EnableSpringDataWebSupport
-public class JpaSupportWebConfig extends BaseWebConfig {
+public abstract class JpaSupportWebConfig extends BaseWebConfig {
     @Autowired
     @Qualifier("primaryEntityManagerFactory")
     private EntityManagerFactory entityManagerFactory;

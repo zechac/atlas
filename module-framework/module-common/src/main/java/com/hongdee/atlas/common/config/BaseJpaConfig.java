@@ -28,34 +28,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @Slf4j
 @Primary
-public class BaseJpaConfig {
-
-    @Autowired
-    Environment environment;
-
-    /**
-     * 获取数据库连接池，支持单源和多源数据库连接
-     */
-    @Bean(destroyMethod="close",initMethod = "init")
-    @Primary
-    public DataSource dataSource() {
-        log.info("==========init db connection pool===============");
-        DruidDataSource dataSource=new DruidDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driver"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.username"));
-        dataSource.setPassword(environment.getProperty("jdbc.password"));
-        dataSource.setValidationQuery(environment.getProperty("jdbc.validationQuery"));
-        try{
-            if(Boolean.valueOf(environment.getProperty("druid.enableDataSourceMonitor","true"))){
-                List arr=new ArrayList();
-                dataSource.setProxyFilters(arr);
-            }
-        }catch (Exception e){
-            log.error(e.getMessage());
-        }
-        return dataSource;
-    }
+public abstract class BaseJpaConfig extends JdbcConfig {
 
     @Bean
     @Primary
