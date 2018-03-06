@@ -1,5 +1,6 @@
 package com.hongdee.atlas.entity;
 
+import com.alibaba.fastjson.annotation.JSONType;
 import com.hongdee.atlas.common.constant.Constant;
 import com.hongdee.atlas.common.jpa.entity.BaseEntity;
 import com.hongdee.atlas.metadata.mysql.KeyType;
@@ -14,6 +15,7 @@ import javax.persistence.*;
 @Data
 @Cacheable
 @Entity
+@JSONType(ignores = {"metadataGroup"})
 public class Metadata extends BaseEntity{
 
     @Basic

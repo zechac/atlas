@@ -54,7 +54,7 @@
 		<module>spring-web-server</module>
 		<module>module-dynamic</module>
 		<module>module-metadata</module>
-		<module>module-common</module>
+		<module>module-framework</module>
 		<module>module-wechat</module>
 		<module>module-template</module>
 		<module>module-RBAC</module>
@@ -93,6 +93,7 @@
 	</dependencyManagement>
 	
 	<dependencies>
+
 		<!--json-->
 		<dependency>
 			 <groupId>com.alibaba</groupId>
