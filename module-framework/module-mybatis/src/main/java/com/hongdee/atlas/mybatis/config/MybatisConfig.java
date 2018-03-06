@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource(value = "classpath:mybatis-config.properties")
-public abstract class MybatisConfig extends JdbcConfig {
+public class MybatisConfig extends JdbcConfig {
 
     @Bean
     public SqlSessionFactoryBean sqlSessionFactoryBean(){

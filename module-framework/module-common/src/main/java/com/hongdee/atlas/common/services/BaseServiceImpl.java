@@ -212,7 +212,7 @@ public abstract class BaseServiceImpl<K extends SuperEntity,T extends BaseRepo> 
     protected Specification buildSpecification(final Map<String,Object> conditions){
         final Specification specification=new Specification() {
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
-                return cb.and(mapQueryBuilder.buildMapQueryPredicates(cb,root,conditions));
+                return mapQueryBuilder.buildMapQueryPredicates(cb,root,conditions);
             }
         };
         return specification;
@@ -221,7 +221,7 @@ public abstract class BaseServiceImpl<K extends SuperEntity,T extends BaseRepo> 
     protected CustomSpecification buildCustonSpecification(final Map<String,Object> conditions){
         final CustomSpecification specification=new CustomSpecification() {
             public Predicate toPredicate(Root root, CriteriaBuilder cb) {
-                return cb.and(mapQueryBuilder.buildMapQueryPredicates(cb,root,conditions));
+                return mapQueryBuilder.buildMapQueryPredicates(cb,root,conditions);
             }
         };
         return specification;

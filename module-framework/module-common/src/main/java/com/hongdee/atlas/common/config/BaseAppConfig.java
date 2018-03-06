@@ -12,6 +12,7 @@ import com.hongdee.atlas.common.convert.StringToDateConverter;
 import com.hongdee.atlas.common.jpa.query.MapQueryBuilder;
 import com.hongdee.atlas.common.jpa.query.StringMapQueryBuilder;
 
+import javax.persistence.Enumerated;
 import javax.sql.DataSource;
 import java.util.Date;
 
@@ -20,10 +21,13 @@ import java.util.Date;
  */
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass = true)
-public abstract class BaseAppConfig {
+public class BaseAppConfig {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private Environment environment;
 
     /**
      * 类型转换器配置

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.DataSource;
 import java.util.Map;
 
 @RestController
@@ -21,6 +22,9 @@ public class DemoController {
 
     @Autowired
     private DemoMapper demoMapper;
+
+    @Autowired
+    private DataSource dataSource;
 
     @RequestMapping("get")
     public JsonResponse getDemo(@RequestParam Map map, Pageable pageable){
