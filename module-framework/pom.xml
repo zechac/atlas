@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- 项目坐标 -->
+	<groupId>com.hongdee.atlas</groupId>
+	<artifactId>module-framework</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>应用基础服务项目框架</name>
+
+	<!-- Inherit defaults from Spring Boot -->
+	<parent>
+		<groupId>com.hongdee.atlas</groupId>
+		<artifactId>base-project</artifactId>
+		<version>v0.1</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+	<!--变量配置 -->
+	<properties>
+		<mybatis.version>3.4.5</mybatis.version>
+		<mybatis-spring.version>1.3.1</mybatis-spring.version>
+	</properties>	
+	<!--聚合模块 -->
+	<modules>
+		<module>module-common</module>
+	</modules>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis-spring</artifactId>
+				<version>${mybatis-spring.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+	</dependencies>
+	
+</project>
