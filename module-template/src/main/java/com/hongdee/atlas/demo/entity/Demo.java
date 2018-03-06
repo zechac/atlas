@@ -4,25 +4,35 @@ package com.hongdee.atlas.demo.entity;
 import com.alibaba.fastjson.annotation.JSONType;
 import com.hongdee.atlas.common.constant.Constant;
 import com.hongdee.atlas.common.jpa.entity.BaseEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * 实体
+ */
 @Table(name = Constant.PERFIXX_TABLE_SYSTEM+"demo")
+@Entity
 @Data
 @Cacheable
-@Entity
-@JSONType(ignores = {"demoMany2Many","demoOne2Many"})
+@NoArgsConstructor
+@AllArgsConstructor
+@JSONType(ignores = {"demoMany2Many","demoMany2Manies"})
 public class Demo extends BaseEntity{
+
+    public Demo(String name){
+        this.name=name;
+    }
 
     @Basic
     private String name;
 
     @JoinColumn(name = "r_damo_one_2_many")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private DemoOne2Many demoOne2Many;
-
 
     @ManyToMany(fetch = FetchType.LAZY,cascade = {})
     @JoinTable(name="r_demo_many_to_many",

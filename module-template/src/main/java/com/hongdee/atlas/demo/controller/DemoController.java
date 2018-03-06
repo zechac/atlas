@@ -3,17 +3,12 @@ package com.hongdee.atlas.demo.controller;
 import com.hongdee.atlas.common.web.JsonResponse;
 import com.hongdee.atlas.common.web.RequestParamUtils;
 import com.hongdee.atlas.demo.entity.Demo;
-import com.hongdee.atlas.demo.entity.DemoMany2Many;
 import com.hongdee.atlas.demo.mapper.DemoMapper;
 import com.hongdee.atlas.demo.service.DemoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 

@@ -8,6 +8,8 @@ import java.util.Map;
 
 /**
  * Created by zhaozh on 2016/10/19/019.
+ * demoRelation__R__id_LEFT$LT$OR_2
+ * id$EQ$AND_2
  * LinkedHashMap linkedHashMap=new LinkedHashMap();
  linkedHashMap.put("ideq","id$EQ");
  linkedHashMap.put("data","data$EQ$AND_2");
@@ -50,7 +52,7 @@ public interface MapQueryBuilder<T> {
      * @param testCondition
      * @return
      */
-    Predicate buildMapQueryPredicate(CriteriaBuilder cb, Root root, T condition, Object testCondition);
+    Predicate buildMapQueryPredicate(CriteriaBuilder cb, Root root, String path, T condition, Object testCondition);
 
     /**
      * 生成查询条件
@@ -59,6 +61,6 @@ public interface MapQueryBuilder<T> {
      * @param condition
      * @return
      */
-    Predicate[] buildMapQueryPredicates(CriteriaBuilder cb, Root root, Map<T, Object> condition);
+    Predicate buildMapQueryPredicates(CriteriaBuilder cb, Root root, Map<T, Object> condition);
 
 }

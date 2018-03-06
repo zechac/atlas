@@ -1,6 +1,7 @@
 package com.hongdee.atlas.common.jpa.query;
 
 import com.hongdee.atlas.common.exception.JpaMapQueryException;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.criteria.*;
 import java.lang.reflect.Array;
@@ -18,10 +19,10 @@ public class StringMapQueryBuilder extends AbstractMapQueryBuilder {
      * @param combCondition
      * @param split
      */
-    public void execGroupCondition(CriteriaBuilder cb,Predicate predicate,Map combCondition,String... split){
-        String[] groupArr=split[2].split(SPLIT_GROUP);
-        if(combCondition.containsKey(groupArr[1])) {
-            Predicate hp = (Predicate) combCondition.get(groupArr[1]);
+    public void execGroupCondition(CriteriaBuilder cb,Predicate predicate,Map combCondition,String split){
+        String[] groupArr=split.split(SPLIT_GROUP);
+        if(combCondition.containsKey(split)) {
+            Predicate hp = (Predicate) combCondition.get(split);
             QueryCondition queryCondition1=QueryCondition.valueOf(groupArr[0]);
             Predicate _p=null;
             switch (queryCondition1){
@@ -34,9 +35,9 @@ public class StringMapQueryBuilder extends AbstractMapQueryBuilder {
                 default:
                     throw new JpaMapQueryException("不支持的关系表达式");
             }
-            combCondition.put(groupArr[1],_p);
+            combCondition.put(split,_p);
         }else{
-            combCondition.put(groupArr[1], predicate);
+            combCondition.put(split, predicate);
         }
     }
 
@@ -86,112 +87,122 @@ public class StringMapQueryBuilder extends AbstractMapQueryBuilder {
      * 生成predicate
      * @param cb
      * @param root
-     * @param key   mapQuery key
-     * @param val   val
+     * @param path   mapQuery key
+     * @param condition   val
      * @return
      */
     @Override
-    public Predicate buildMapQueryPredicate(CriteriaBuilder cb, Root root, String key, Object val) {
-        String[] split=key.split(SPLIT_CONDITON);
-        Path condition =findQueryPath(split[0],root);
+    public Predicate buildMapQueryPredicate(CriteriaBuilder cb, Root root, String path,String condition, Object val) {
+        Path queryPath =findQueryPath(path,root);
         Object testCondition=val;
         QueryCondition queryCondition=QueryCondition.EQ;
-        if(split.length>1) {
-            queryCondition = QueryCondition.valueOf(split[1]);
+        if(StringUtils.isNotBlank(condition)) {
+            queryCondition = QueryCondition.valueOf(condition);
         }
         Predicate predicate = null;
         if(!QueryCondition.IN.equals(queryCondition)) {
-            testCondition=checkAndConvertElementType(val,condition);
+            testCondition=checkAndConvertElementType(val,queryPath);
             switch (queryCondition) {
                 case EQ:
-                    predicate = cb.equal(condition,testCondition);
+                    predicate = cb.equal(queryPath,testCondition);
                     break;
                 case NEQ:
-                    predicate = cb.notEqual(condition,testCondition);
+                    predicate = cb.notEqual(queryPath,testCondition);
                     break;
                 case GT:
                     if(Comparable.class.isAssignableFrom(testCondition.getClass())){
-                        predicate=cb.greaterThan(condition,(Comparable)testCondition);
+                        predicate=cb.greaterThan(queryPath,(Comparable)testCondition);
                     }else {
-                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",condition.getJavaType(),val.toString()));
+                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",queryPath.getJavaType(),val.toString()));
                     }
                     break;
                 case LT:
                     if(Comparable.class.isAssignableFrom(testCondition.getClass())){
-                        predicate=cb.lessThan(condition,(Comparable)testCondition);
+                        predicate=cb.lessThan(queryPath,(Comparable)testCondition);
                     }else {
-                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",condition.getJavaType(),val.toString()));
+                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",queryPath.getJavaType(),val.toString()));
                     }
                     break;
                 case NULL:
-                    predicate=cb.isNull(condition);
+                    predicate=cb.isNull(queryPath);
                     break;
                 case NOTNULL:
-                    predicate=cb.isNotNull(condition);
+                    predicate=cb.isNotNull(queryPath);
                     break;
                 case LIKE:
-                    predicate=cb.like(condition,testCondition.toString());
+                    predicate=cb.like(queryPath,testCondition.toString());
                     break;
                 case MLIKE:
-                    predicate=cb.like(condition,"%"+testCondition.toString()+"%");
+                    predicate=cb.like(queryPath,"%"+testCondition.toString()+"%");
                     break;
                 case LLIKE:
-                    predicate=cb.like(condition,"%"+testCondition.toString());
+                    predicate=cb.like(queryPath,"%"+testCondition.toString());
                     break;
                 case RLIKE:
-                    predicate=cb.like(condition,testCondition.toString()+"%");
+                    predicate=cb.like(queryPath,testCondition.toString()+"%");
                     break;
                 case NLIKE:
-                    predicate=cb.notLike(condition,testCondition.toString());
+                    predicate=cb.notLike(queryPath,testCondition.toString());
                     break;
                 case LTE:
                     if(Comparable.class.isAssignableFrom(testCondition.getClass())){
-                        predicate=cb.lessThanOrEqualTo(condition,(Comparable)testCondition);
+                        predicate=cb.lessThanOrEqualTo(queryPath,(Comparable)testCondition);
                     }else {
-                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",condition.getJavaType(),val.toString()));
+                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",queryPath.getJavaType(),val.toString()));
                     }
                     break;
                 case GTE:
                     if(Comparable.class.isAssignableFrom(testCondition.getClass())){
-                        predicate=cb.greaterThanOrEqualTo(condition,(Comparable)testCondition);
+                        predicate=cb.greaterThanOrEqualTo(queryPath,(Comparable)testCondition);
                     }else {
-                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",condition.getJavaType(),val.toString()));
+                        throw new JpaMapQueryException(String.format("无法比较的值[%s=%s]",queryPath.getJavaType(),val.toString()));
                     }
                     break;
                 case BWA:
                     List list=(List)testCondition;
-                    predicate=cb.between(condition,(Comparable) list.get(0),(Comparable) list.get(1));
+                    predicate=cb.between(queryPath,(Comparable) list.get(0),(Comparable) list.get(1));
                     break;
                 default:
                     throw new JpaMapQueryException("不支持的条件表达式");
             }
         }else {
-            predicate=createInCondition(cb,condition,testCondition);
+            predicate=createInCondition(cb,queryPath,testCondition);
         }
         return predicate;
     }
 
     @Override
-    public Predicate[] buildMapQueryPredicates(CriteriaBuilder cb, Root root, Map<String,Object> queryConditions) {
-        Map<String,Predicate> combCondition=new HashMap();
+    public Predicate buildMapQueryPredicates(CriteriaBuilder cb, Root root, Map<String,Object> queryConditions) {
+        Map<String,Predicate> combCondition=new LinkedHashMap<>();
         int x=0;
         for (Map.Entry<String,Object> s : queryConditions.entrySet()) {
             x++;
             String predicateS =s.getKey();
-            Predicate predicate = buildMapQueryPredicate(cb,root,predicateS,s.getValue());
-            String[] split=predicateS.split(SPLIT_GROUP);
+            String[] split=predicateS.split(SPLIT_CONDITON);
+            String condition="";
+            if(split.length>1){
+                condition=split[1];
+            }
+            Predicate predicate = buildMapQueryPredicate(cb,root,split[0],condition,s.getValue());
             if (split.length > 2) {
-                execGroupCondition(cb,predicate,combCondition,split);
+                execGroupCondition(cb,predicate,combCondition,split[2]);
             }else {
-                combCondition.put(SPLIT_GROUP +x,predicate);
+                combCondition.put("AND"+SPLIT_GROUP +x,predicate);
             }
         }
-
-        Predicate[] predicteArr=new Predicate[combCondition.keySet().size()];
+        Predicate ret=null;
         x=0;
-        for(Predicate s:combCondition.values()){
-            predicteArr[x++]=s;
+        for(Map.Entry<String,Predicate> entry:combCondition.entrySet()){
+            if(ret!=null){
+                if(entry.getKey().startsWith("OR")){
+                    ret=cb.or(ret,entry.getValue());
+                }else {
+                    ret=cb.and(ret,entry.getValue());
+                }
+            }else {
+                ret=entry.getValue();
+            }
         }
-        return predicteArr;
+        return ret;
     }
 }

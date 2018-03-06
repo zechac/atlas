@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public abstract class AbstractMapQueryBuilder implements MapQueryBuilder<String> {
 
-    protected static final String SPLIT_CONDITON ="$";
+    protected static final String SPLIT_CONDITON ="\\$";
     protected static final String SPLIT_ENTITY ="__";
     protected static final String SPLIT_RELATION ="_";
     protected static final String SPLIT_GROUP ="_";
@@ -121,7 +121,7 @@ public abstract class AbstractMapQueryBuilder implements MapQueryBuilder<String>
     @Override
     public abstract LinkedHashMap<String, Object> buildQueryMap(LinkedHashMap<Object, String> key, Map<Object, Object> value);
     @Override
-    public abstract Predicate buildMapQueryPredicate(CriteriaBuilder cb, Root root, String condition, Object testCondition);
+    public abstract Predicate buildMapQueryPredicate(CriteriaBuilder cb, Root root,String path, String condition, Object value);
     @Override
-    public abstract Predicate[] buildMapQueryPredicates(CriteriaBuilder cb, Root root, Map<String, Object> condition);
+    public abstract Predicate buildMapQueryPredicates(CriteriaBuilder cb, Root root, Map<String, Object> condition);
 }
