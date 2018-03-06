@@ -23,12 +23,6 @@ import java.util.Date;
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 public class BaseAppConfig {
 
-    @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private Environment environment;
-
     /**
      * 类型转换器配置
      * @return
@@ -63,11 +57,6 @@ public class BaseAppConfig {
         return stringMapQueryBuilder;
     }
 
-
-    @Bean
-    public SqlTemplate sqlTemplate(){
-        return new SqlTemplate(dataSource);
-    }
     /**
      * 自定义MapQueryBuilder
      * @return

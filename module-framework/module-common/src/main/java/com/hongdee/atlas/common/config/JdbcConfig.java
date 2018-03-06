@@ -1,6 +1,7 @@
 package com.hongdee.atlas.common.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.hongdee.atlas.common.sql.SqlTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.EnvironmentAware;
@@ -19,9 +20,16 @@ public abstract class JdbcConfig implements EnvironmentAware {
 
     @Autowired
     protected Environment environment;
+    @Autowired
+    protected DataSource dataSource;
 
     public void setEnvironment(Environment environment){
         this.environment=environment;
+    }
+
+    @Bean
+    public SqlTemplate sqlTemplate(){
+        return new SqlTemplate(dataSource);
     }
 
     /**
