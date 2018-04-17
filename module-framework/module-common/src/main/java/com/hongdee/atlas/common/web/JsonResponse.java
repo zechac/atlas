@@ -42,12 +42,12 @@ public class JsonResponse extends ResponseEntity<Map<String,Object>> {
         return jsonResponse;
     }
 
-    public JsonResponse Message(String message){
+    public JsonResponse message(String message){
         this.getBody().put("message",message);
         return this;
     }
 
-    public JsonResponse Data(Object o){
+    public JsonResponse data(Object o){
         this.getBody().put("data",o);
         return this;
     }

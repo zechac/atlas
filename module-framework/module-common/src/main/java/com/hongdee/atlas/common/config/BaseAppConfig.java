@@ -1,19 +1,14 @@
 package com.hongdee.atlas.common.config;
 
-import com.hongdee.atlas.common.sql.SqlTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.core.env.Environment;
 import com.hongdee.atlas.common.convert.StringToDateConverter;
 import com.hongdee.atlas.common.jpa.query.MapQueryBuilder;
 import com.hongdee.atlas.common.jpa.query.StringMapQueryBuilder;
 
-import javax.persistence.Enumerated;
-import javax.sql.DataSource;
 import java.util.Date;
 
 /**

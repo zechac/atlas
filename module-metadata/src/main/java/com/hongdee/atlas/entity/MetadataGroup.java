@@ -1,6 +1,7 @@
 package com.hongdee.atlas.entity;
 
 
+import com.alibaba.fastjson.annotation.JSONType;
 import com.hongdee.atlas.common.constant.Constant;
 import com.hongdee.atlas.common.jpa.entity.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Cacheable
 @Entity
 @NoArgsConstructor
+@JSONType(ignores = {"metadatas"})
 public class MetadataGroup extends BaseEntity{
 
     public MetadataGroup(String id,String name){
@@ -26,6 +28,12 @@ public class MetadataGroup extends BaseEntity{
 
     @Basic
     private String name;
+
+    private String jpaName;
+
+    private String javaType;
+
+    private boolean standard;
 
     /**
      * 数据库名称
@@ -39,6 +47,6 @@ public class MetadataGroup extends BaseEntity{
     @Basic
     private String description;
 
-    @OneToMany(mappedBy = "metadataGroup")
+    @OneToMany(mappedBy = "metadataGroup",cascade = CascadeType.ALL)
     private List<Metadata> metadatas;
 }

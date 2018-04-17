@@ -7,17 +7,18 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import javax.persistence.QueryHint;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import static org.springframework.data.jpa.repository.query.QueryUtils.toOrders;
 
 /**
@@ -29,6 +30,12 @@ public class BaseRepoImpl<T,ID extends Serializable> extends SimpleJpaRepository
 
     private final EntityManager entityManager;
 
+    private JpaEntityInformation jpaEntityInformation;
+
+    public JpaEntityInformation getJpaEntityInformation() {
+        return jpaEntityInformation;
+    }
+
     public EntityManager getEntityManager(){
         return this.entityManager;
     }
@@ -38,6 +45,7 @@ public class BaseRepoImpl<T,ID extends Serializable> extends SimpleJpaRepository
 
         // Keep the EntityManager around to used from the newly introduced methods.
         this.entityManager = entityManager;
+        this.jpaEntityInformation=entityInformation;
     }
 
     public int update(T entity,List<String> field){
@@ -94,45 +102,6 @@ public class BaseRepoImpl<T,ID extends Serializable> extends SimpleJpaRepository
     @Override
     public int delete(CustomSpecification<ID> customSpecification) {
         return delete(getDomainClass(),customSpecification);
-    }
-
-    protected void buildSelect(CriteriaQuery criteriaQuery,Root root,String... sel){
-        List<Selection> selections=new ArrayList<>();
-        for(String s :sel){
-            selections.add(root.get(s));
-        }
-        criteriaQuery.multiselect(selections);
-    }
-
-    @Override
-    public Page<T> queryByPage(Specification<T> spec, Pageable pageable,String... select) {
-        Sort sort = pageable == null ? null : pageable.getSort();
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-        Class<T> domainClass=getDomainClass();
-        CriteriaQuery<T> query = builder.createQuery(domainClass);
-        Root<T> root = query.from(domainClass);
-        if(select!=null&&select.length>0){
-            buildSelect(query,root,select);
-        }else {
-            query.select(root);
-        }
-        Predicate predicate = spec.toPredicate(root, query, builder);
-
-        if (predicate != null) {
-            query.where(predicate);
-        }
-
-        if (sort != null) {
-            query.orderBy(toOrders(sort, root, builder));
-        }
-        TypedQuery<T> tTypedQuery=entityManager.createQuery(query);
-        for (Map.Entry<String, Object> hint : getQueryHints().entrySet()) {
-            tTypedQuery.setHint(hint.getKey(), hint.getValue());
-        }
-
-        return pageable == null ? new PageImpl<T>(tTypedQuery.getResultList())
-                : readPage(tTypedQuery, getDomainClass(), pageable, spec);
-
     }
 
 }

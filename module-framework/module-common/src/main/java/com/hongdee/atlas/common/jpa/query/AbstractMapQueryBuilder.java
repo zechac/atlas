@@ -1,6 +1,6 @@
 package com.hongdee.atlas.common.jpa.query;
 
-import org.hibernate.jpa.criteria.path.SingularAttributePath;
+import org.hibernate.query.criteria.internal.path.SingularAttributePath;
 import org.springframework.core.convert.ConversionService;
 
 import javax.persistence.criteria.*;

@@ -1,13 +1,15 @@
 package com.hongdee.atlas.metadata.mysql;
 
-import com.hongdee.atlas.common.sql.QueryCallback;
-import com.hongdee.atlas.common.sql.SqlTemplate;
 import com.hongdee.atlas.entity.Metadata;
 import com.hongdee.atlas.entity.MetadataGroup;
 import com.hongdee.atlas.metadata.exception.MetadataException;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowCallbackHandler;
+
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,8 +17,8 @@ import java.util.List;
 @Data
 public class Reflector {
 
-    private SqlTemplate sqlTemplate;
-    public Reflector(SqlTemplate sqlTemplate){
+    private JdbcTemplate sqlTemplate;
+    public Reflector(JdbcTemplate sqlTemplate){
         this.sqlTemplate=sqlTemplate;
     }
 
@@ -28,31 +30,23 @@ public class Reflector {
     public List<Metadata> getMetadatas(MetadataGroup metadataGroup){
         List<Metadata> metadatas = new ArrayList<>();
         Date now = new Date();
-        sqlTemplate.executeQuery(String.format("show full fields from %s", metadataGroup.getName()), new QueryCallback() {
+        sqlTemplate.query(String.format("show full fields from `%s`", metadataGroup.getName()), new RowCallbackHandler() {
             @Override
-            public void exec(ResultSet resultSet) {
-                try {
-                    while (resultSet.next()) {
-                        Metadata metadata = new Metadata();
-                        metadata.setDescription(resultSet.getString("comment"));
-                        metadata.setName(resultSet.getString("field"));
-                        metadata.setType(resultSet.getString("type"));
-                        String kt = resultSet.getString("key");
-                        if (StringUtils.isNotBlank(kt)) {
-                            metadata.setKeyType(KeyType.valueOf(kt));
-                        }
-                        metadata.setMetadataGroup(metadataGroup);
-                        metadata.setNullable(resultSet.getBoolean("null"));
-                        metadata.setDefaultVal(resultSet.getString("default"));
-                        metadata.setCreateDatetime(now);
-                        metadatas.add(metadata);
-                    }
-
-                }catch (Exception e){
-                    throw new MetadataException(Reflector.class,"映射元数据失败");
+            public void processRow(ResultSet resultSet) throws SQLException {
+                Metadata metadata = new Metadata();
+                metadata.setDescription(resultSet.getString("comment"));
+                metadata.setName(resultSet.getString("field"));
+                metadata.setType(resultSet.getString("type"));
+                String kt = resultSet.getString("key");
+                if (StringUtils.isNotBlank(kt)) {
+                    metadata.setKeyType(KeyType.valueOf(kt));
                 }
-            }
-        },null);
+                metadata.setMetadataGroup(metadataGroup);
+                metadata.setNullable(resultSet.getBoolean("null"));
+                metadata.setDefaultVal(resultSet.getString("default"));
+                metadata.setCreateDatetime(now);
+                metadatas.add(metadata);
+            }});
         return metadatas;
     }
 
@@ -63,7 +57,7 @@ public class Reflector {
     public void deleteMetadata(Metadata metadata){
         String table=metadata.getMetadataGroup().getName();
         String column=metadata.getName();
-        sqlTemplate.execute(String.format(" alter table %s drop column %s"),table,column);
+        sqlTemplate.execute(String.format("alter table %s drop column %s",table,column));
     }
 
     /**
@@ -79,9 +73,18 @@ public class Reflector {
         }
         String comment="";
         if(StringUtils.isNotBlank(metadata.getDescription())){
-            comment=metadata.getDescription();
+            comment="comment '"+metadata.getDescription()+"'";
         }
-        sqlTemplate.execute(String.format(" alter table %s add column %s %s comment '%s'"),table,column,type,comment);
+        String nul="NOT NULL";
+        if(metadata.getNullable()!=null&&metadata.getNullable()){
+            nul="NULL";
+        }
+        String def="";
+        if(StringUtils.isNotBlank(metadata.getDefaultVal())){
+            def="default '"+metadata.getDefaultVal()+"'";
+        }
+        String sql=String.format(" alter table `%s` add column `%s` %s %s %s %s",table,column,type,nul,def,comment);
+        sqlTemplate.execute(sql);
     }
 
     /**
@@ -97,9 +100,18 @@ public class Reflector {
         }
         String comment="";
         if(StringUtils.isNotBlank(metadata.getDescription())){
-            comment=metadata.getDescription();
+            comment="comment '"+metadata.getDescription()+"'";
         }
-        sqlTemplate.execute(String.format(" alter table %s modify column %s %s comment '%s'"),table,column,type,comment);
+        String nul="NOT NULL";
+        if(metadata.getNullable()!=null&&metadata.getNullable()){
+            nul="NULL";
+        }
+        String def="";
+        if(StringUtils.isNotBlank(metadata.getDefaultVal())){
+            def="default '"+metadata.getDefaultVal()+"'";
+        }
+        String sql=String.format(" alter table %s modify column `%s` %s %s %s %s",table,column,type,nul,def,comment);
+        sqlTemplate.execute(sql);
     }
 
     /**
@@ -109,10 +121,16 @@ public class Reflector {
         String oldTable=metadataGroup.getName();
         String newTable=newMetadataGroup.getName();
         String comment="";
-        if(StringUtils.isNotBlank(newMetadataGroup.getDescription())){
+
+        if(StringUtils.isNotBlank(newMetadataGroup.getDescription())&&(!newMetadataGroup.getDescription().equals(metadataGroup.getDescription()))){
             comment=newMetadataGroup.getDescription();
+            sqlTemplate.execute(String.format(" alter table `%s` comment '%s'",oldTable,comment));
         }
-        sqlTemplate.execute(String.format(" alter table %s rename %s comment '%s'"),oldTable,newTable,comment);
+        if(!metadataGroup.getName().equals(newMetadataGroup.getName())){
+            if(!metadataGroup.isStandard()){
+                sqlTemplate.execute(String.format(" alter table `%s` rename `%s`",oldTable,newTable));
+            }
+        }
     }
 
     /**
@@ -124,10 +142,14 @@ public class Reflector {
         if(StringUtils.isNotBlank(metadataGroup.getDescription())){
             comment=metadataGroup.getDescription();
         }
-        String sql=String.format("cretae table `%s` (",table);
+        String sql=String.format("create table `%s` (",table);
+        String primary=",";
         for(Metadata metadata:metadataGroup.getMetadatas()){
             String nul="NOT NULL";
             String def=null;
+            if(KeyType.PRI.equals(metadata.getKeyType())){
+                primary="primary key ("+metadata.getName()+"),";
+            }
             if(StringUtils.isNotBlank(metadata.getDefaultVal())){
                 def=" default `"+metadata.getDefaultVal()+"`";
             }
@@ -141,10 +163,18 @@ public class Reflector {
             if(StringUtils.isNotBlank(def)){
                 sql+=def;
             }
-            if(StringUtils.isNotBlank(comment)){
-                sql+=comment;
+            if(StringUtils.isNotBlank(metadata.getDescription())){
+                sql+=" COMMENT "+ "'"+metadata.getDescription()+"'";
             }
-
+            sql+=",";
+        }
+        sql+=primary;
+        if(metadataGroup.getMetadatas().size()>0){
+            sql=sql.substring(0,sql.length()-1);
+        }
+        sql+=")ENGINE=InnoDB DEFAULT CHARSET=utf8";
+        if(StringUtils.isNotBlank(comment)){
+            sql+=" comment='"+comment+"'";
         }
         sqlTemplate.execute(sql);
     }
@@ -155,7 +185,7 @@ public class Reflector {
      */
     public void deleteMetadataGroup(MetadataGroup metadataGroup){
         String table=metadataGroup.getName();
-        sqlTemplate.execute(String.format("drop table %s"),table);
+        sqlTemplate.execute(String.format("drop table `%s`",table));
     }
 
 
@@ -168,24 +198,16 @@ public class Reflector {
     public List<MetadataGroup> getMetadataGroups(String module){
         List<MetadataGroup> metadataGroups=new ArrayList<>();
         Date now=new Date();
-        sqlTemplate.executeQuery("show table status", new QueryCallback() {
-            @Override
-            public void exec(ResultSet resultSet) {
-                try{
-                    while (resultSet.next()){
-                        MetadataGroup metadataGroup=new MetadataGroup();
-                        metadataGroup.setDescription(resultSet.getString("comment"));
-                        metadataGroup.setName(resultSet.getString("name"));
-                        metadataGroup.setModule(module);
-                        metadataGroup.setSyncDateTime(now);
-                        metadataGroups.add(metadataGroup);
-                    }
-                }catch (Exception e){
-                    throw new MetadataException(Reflector.class,"获取元数据组失败");
-                }
-            }
-        },null);
+        sqlTemplate.query("show table status", (RowCallbackHandler) resultSet -> {
+            MetadataGroup metadataGroup=new MetadataGroup();
+            metadataGroup.setDescription(resultSet.getString("comment"));
+            metadataGroup.setName(resultSet.getString("name"));
+            metadataGroup.setModule(module);
+            metadataGroup.setSyncDateTime(now);
+            metadataGroups.add(metadataGroup);
+        });
         return metadataGroups;
 
     }
+
 }

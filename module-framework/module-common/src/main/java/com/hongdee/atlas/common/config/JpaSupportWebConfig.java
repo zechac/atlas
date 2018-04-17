@@ -2,6 +2,7 @@ package com.hongdee.atlas.common.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
@@ -16,6 +17,7 @@ import javax.persistence.EntityManagerFactory;
  */
 @Configuration
 @EnableSpringDataWebSupport
+@ConditionalOnClass(EntityManagerFactory.class)
 public abstract class JpaSupportWebConfig extends BaseWebConfig {
     @Autowired
     @Qualifier("primaryEntityManagerFactory")

@@ -16,10 +16,7 @@ import com.hongdee.atlas.common.repo.CustomSpecification;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.*;
 
@@ -130,7 +127,7 @@ public abstract class BaseServiceImpl<K extends SuperEntity,T extends BaseRepo> 
     }
 
     public void deleteById(Serializable id){
-        entityDao.delete(id);
+        entityDao.deleteById(id);
     }
 
     public int update(K entity,Map<String,Object> conditions,String... fields){
@@ -179,7 +176,7 @@ public abstract class BaseServiceImpl<K extends SuperEntity,T extends BaseRepo> 
     }
 
     public K findById(Serializable id) {
-        return (K) entityDao.findOne(id);
+        return (K) entityDao.findById(id).orElse(null);
     }
 
     public Iterable findAll(){
@@ -200,18 +197,46 @@ public abstract class BaseServiceImpl<K extends SuperEntity,T extends BaseRepo> 
     }
 
     public Page<K> queryByPage(Map conditions,Pageable pageable,String... select){
-        Specification specifications=buildSpecification(conditions);
-        return entityDao.queryByPage(specifications,pageable,select);
+        Specification specifications=buildSpecification(conditions,select);
+        return entityDao.findAll(specifications,pageable);
     }
 
     public K queryOne(Map conditions){
         Specification specifications=buildSpecification(conditions);
-        return (K)entityDao.findOne(specifications);
+        return (K)entityDao.findOne(specifications).orElse(null);
     }
 
     protected Specification buildSpecification(final Map<String,Object> conditions){
         final Specification specification=new Specification() {
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                return mapQueryBuilder.buildMapQueryPredicates(cb,root,conditions);
+            }
+        };
+        return specification;
+    }
+
+    /**
+     * 返回 指定的select 字段
+     * @param criteriaQuery
+     * @param root
+     * @param sel
+     */
+    protected void buildSelect(CriteriaQuery criteriaQuery,Root root,String... sel){
+        List<Selection> selections=new ArrayList<>();
+        for(String s :sel){
+            selections.add(root.get(s));
+        }
+        criteriaQuery.multiselect(selections);
+    }
+
+    protected Specification buildSpecification(final Map<String,Object> conditions,String... select){
+        final Specification specification=new Specification() {
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                if(select!=null&&select.length>0){
+                    buildSelect(query,root,select);
+                }else {
+                    query.select(root);
+                }
                 return mapQueryBuilder.buildMapQueryPredicates(cb,root,conditions);
             }
         };

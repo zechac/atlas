@@ -24,10 +24,19 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-public abstract class BaseWebConfig extends WebMvcConfigurerAdapter {
+public class BaseWebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     Environment environment;
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry){
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedMethods("GET", "POST", "DELETE", "PUT")
+                .maxAge(3600);
+    }
 
     /**
      * MessageConvert

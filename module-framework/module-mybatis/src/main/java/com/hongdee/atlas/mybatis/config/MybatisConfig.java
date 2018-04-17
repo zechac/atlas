@@ -1,27 +1,21 @@
 package com.hongdee.atlas.mybatis.config;
 
-import com.hongdee.atlas.common.config.JdbcConfig;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 
 @Configuration
 @PropertySource(value = "classpath:mybatis-config.properties")
-public class MybatisConfig extends JdbcConfig {
+public class MybatisConfig{
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean(){
-        SqlSessionFactoryBean sqlSessionFactoryBean=new SqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(dataSource());
-        return sqlSessionFactoryBean;
-    }
-
-    @Bean
-    public MapperScannerConfigurer mapperScannerConfigurer(){
+    @ConditionalOnMissingBean
+    public MapperScannerConfigurer mapperScannerConfigurer(Environment environment){
         MapperScannerConfigurer mapperScannerConfigurer=new MapperScannerConfigurer();
-        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
+        mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
         mapperScannerConfigurer.setBasePackage(environment.getProperty("mybatis.mapper.packages","com.hongdee.atlas.mapper"));
         return mapperScannerConfigurer;
     }

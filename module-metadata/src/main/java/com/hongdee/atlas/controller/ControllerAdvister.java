@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ControllerAdvister {
 
     @ExceptionHandler
-    public JsonResponse ex(){
-        return JsonResponse.fail().Message("出错了");
+    public JsonResponse ex(Exception ex){
+        return JsonResponse.fail().message("出错了");
     }
 }

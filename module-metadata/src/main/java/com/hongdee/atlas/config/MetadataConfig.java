@@ -1,21 +1,25 @@
 package com.hongdee.atlas.config;
 
-import com.hongdee.atlas.common.sql.SqlTemplate;
+import com.hongdee.atlas.metadata.jpa.JpaReflector;
 import com.hongdee.atlas.metadata.mysql.Reflector;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManagerFactory;
 
 @Configuration
 public class MetadataConfig {
 
-    @Autowired
-    private SqlTemplate sqlTemplate;
+    @Bean
+    public Reflector reflector(JdbcTemplate jdbcTemplate){
+        return new Reflector(jdbcTemplate);
+    }
 
     @Bean
-    public Reflector reflector(){
-        return new Reflector(sqlTemplate);
+    @ConditionalOnBean(EntityManagerFactory.class)
+    public JpaReflector jpaReflector(EntityManagerFactory entityManagerFactory){
+        return new JpaReflector(entityManagerFactory);
     }
 }

@@ -21,6 +21,20 @@ public class Metadata extends BaseEntity{
     @Basic
     private String name;
 
+    private String jpaName;
+
+    /**
+     * 是否jpa映射
+     */
+    private boolean standard;
+
+    private String javaType;
+
+    /**
+     * jpa类型
+     */
+    private String jpaType;
+
     @Basic
     private String description;
 

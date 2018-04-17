@@ -22,15 +22,4 @@ public interface BaseRepo<T,I extends Serializable> extends PagingAndSortingRepo
     int update(T entity, List<String> field, CustomSpecification<I> customSpecification);
     int delete(Class<? extends T> clazz, CustomSpecification<I> customSpecification);
     int delete(CustomSpecification<I> customSpecification);
-
-    /**
-     * 自定义返回值的查询
-     * 返回值查询优化
-     * 需要配合修改实体的构造函数
-     * @param spec
-     * @param pageable
-     * @param select
-     * @return
-     */
-    Page<T> queryByPage(Specification<T> spec, Pageable pageable,String... select);
 }

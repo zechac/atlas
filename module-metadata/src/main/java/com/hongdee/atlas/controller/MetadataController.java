@@ -9,14 +9,8 @@ import com.hongdee.atlas.service.MetadataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,7 +33,7 @@ public class MetadataController {
     public JsonResponse groupList(Pageable pageable,@RequestParam Map param,String[] select){
        Map query= RequestParamUtils.mapRequestParam(param,"s_");
        Page<MetadataGroup> metadataGroups= metadataGroupService.queryByPage(query,pageable,select);
-       return JsonResponse.success().Data(metadataGroups);
+       return JsonResponse.success().data(metadataGroups);
     }
 
     /**
@@ -48,20 +42,20 @@ public class MetadataController {
      * @return
      */
     @RequestMapping("list")
-    public JsonResponse list(Pageable pageable,Map param){
+    public JsonResponse list(Pageable pageable,@RequestParam Map param){
         Map query= RequestParamUtils.mapRequestParam(param,"s_");
         Page<Metadata> metadataGroups= metadataService.queryByPage(query,pageable);
-        return JsonResponse.success().Data(metadataGroups);
+        return JsonResponse.success().data(metadataGroups);
     }
 
     /**
      * 修改元数据
      * @return
      */
-    @RequestMapping("mdy")
-    public JsonResponse mdy(Metadata metadata){
-        metadataService.save(metadata);
-        return JsonResponse.success().Data(metadata);
+    @RequestMapping("save")
+    public JsonResponse mdy(@RequestBody Metadata metadata){
+        metadataService.syncSave(metadata);
+        return JsonResponse.success().data(metadata);
     }
 
     /**
@@ -69,10 +63,10 @@ public class MetadataController {
      * /metadata/group/mdy?name=2
      * @return
      */
-    @RequestMapping("group/mdy")
-    public JsonResponse groupMdy(MetadataGroup metadataGroup){
-        metadataGroupService.save(metadataGroup);
-        return JsonResponse.success().Data(metadataGroup);
+    @RequestMapping("group/save")
+    public JsonResponse groupMdy(@RequestBody MetadataGroup metadataGroup){
+        metadataGroupService.syncSave(metadataGroup);
+        return JsonResponse.success().data(metadataGroup);
     }
 
     /**
@@ -82,7 +76,11 @@ public class MetadataController {
      */
     @RequestMapping("group/delete/{id}")
     public JsonResponse groupDelete(@PathVariable String id){
-        metadataGroupService.deleteById(id);
+        MetadataGroup metadataGroup=metadataGroupService.findById(id);
+        if(metadataGroup.isStandard()){
+            return JsonResponse.fail().message("不能删除标准数据");
+        }
+        metadataGroupService.delete(id);
         return JsonResponse.success();
     }
 
@@ -107,12 +105,22 @@ public class MetadataController {
     }
 
     /**
+     * 刷新所有元数据
+     * @return
+     */
+    @RequestMapping("flush/all")
+    public JsonResponse flush(){
+        metadataGroupService.flush();
+        return JsonResponse.success();
+    }
+
+    /**
      * 刷新元数据组
      * @return
      */
     @RequestMapping("group/flush")
     public JsonResponse flushGroup(){
-        metadataGroupService.flush();
+        metadataGroupService.flushGroup();
         return JsonResponse.success();
     }
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class IDEntity extends SuperEntity{
     @Id
     @GeneratedValue(generator = "generatedkey")
-    @GenericGenerator(name = "generatedkey", strategy = "uuid")
-    @Column(length=32)
+    @GenericGenerator(name = "generatedkey", strategy = "uuid2")
+    @Column(length=64)
     protected String id;
 }

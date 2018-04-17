@@ -25,19 +25,34 @@
 	</properties>
 
 	<dependencies>
-		<!--<dependency>-->
-			<!--<groupId>com.hongdee.atlas</groupId>-->
-			<!--<artifactId>module-RBAC</artifactId>-->
-			<!--<version>${module.version}</version>-->
-		<!--</dependency>-->
-		<!--<dependency>-->
-			<!--<groupId>com.hongdee.atlas</groupId>-->
-			<!--<artifactId>module-metadata</artifactId>-->
-			<!--<version>${module.version}</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>com.hongdee.atlas</groupId>
+			<artifactId>module-task</artifactId>
+			<version>${module.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hongdee.atlas</groupId>
+			<artifactId>module-workflow</artifactId>
+			<version>${module.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>com.hongdee.atlas</groupId>
 			<artifactId>module-template</artifactId>
+			<version>${module.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hongdee.atlas</groupId>
+			<artifactId>module-dynamic</artifactId>
+			<version>${module.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hongdee.atlas</groupId>
+			<artifactId>module-metadata</artifactId>
+			<version>${module.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hongdee.atlas</groupId>
+			<artifactId>module-RBAC</artifactId>
 			<version>${module.version}</version>
 		</dependency>
 		<dependency>

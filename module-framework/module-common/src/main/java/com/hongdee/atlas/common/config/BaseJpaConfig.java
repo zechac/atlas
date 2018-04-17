@@ -4,6 +4,7 @@ import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -15,6 +16,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.SharedCacheMode;
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -26,9 +28,10 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
+@ConditionalOnBean(DataSource.class)
 @Slf4j
 @Primary
-public abstract class BaseJpaConfig extends JdbcConfig {
+public abstract class BaseJpaConfig {
 
     @Bean
     @Primary
@@ -43,10 +46,10 @@ public abstract class BaseJpaConfig extends JdbcConfig {
      */
     @Bean(name="primaryEntityManagerFactory")
     @Primary
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(){
+    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(Environment environment,DataSource dataSource){
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean() ;
 
-        entityManagerFactory.setDataSource(dataSource()) ;
+        entityManagerFactory.setDataSource(dataSource) ;
         //获取需要检测的包
         String[] packages = environment.getRequiredProperty("jpa.entity.packages").split("[;,]") ;
 
@@ -59,10 +62,11 @@ public abstract class BaseJpaConfig extends JdbcConfig {
 
         //jpa属性
         Properties jpaProperties = new Properties() ;
+        jpaProperties.setProperty("hibernate.physical_naming_strategy","org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
         jpaProperties.setProperty("hibernate.show_sql",environment.getProperty("hibernate.show_sql","true"));
         jpaProperties.setProperty("hibernate.format_sql",environment.getProperty("hibernate.format_sql","true"));
         jpaProperties.setProperty("hibernate.hbm2ddl.auto",environment.getProperty("hibernate.hbm2ddl.auto","update"));
-        jpaProperties.setProperty("hibernate.dialect",environment.getProperty("hibernate.dialect","org.hibernate.dialect.MySQLDialect"));
+        jpaProperties.setProperty("hibernate.dialect",environment.getProperty("hibernate.dialect","org.hibernate.dialect.MySQL5InnoDBDialect"));
         if("true".equals(environment.getProperty("hibernate.cache.use_second_level_cache","false"))){
             jpaProperties.setProperty("hibernate.cache.use_second_level_cachel",environment.getProperty("hibernate.cache.use_second_level_cache","true"));
             jpaProperties.setProperty("hibernate.cache.use_query_cache",environment.getProperty("hibernate.cache.use_query_cache","true"));
@@ -81,9 +85,9 @@ public abstract class BaseJpaConfig extends JdbcConfig {
 
     @Bean(name = "primaryTransactionManager")
     @Primary
-    public JpaTransactionManager jpaTransactionManager(){
+    public JpaTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory){
         JpaTransactionManager jpaTransactionManager=new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(localContainerEntityManagerFactoryBean().getObject());
+        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
         return jpaTransactionManager;
     }
 }

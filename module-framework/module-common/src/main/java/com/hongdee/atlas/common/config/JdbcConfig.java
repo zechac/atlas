@@ -1,14 +1,18 @@
 package com.hongdee.atlas.common.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.hongdee.atlas.common.sql.SqlTemplate;
+import com.hongdee.atlas.common.jdbc.template.CommonQuery;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -16,20 +20,28 @@ import java.util.List;
 
 @Configuration
 @Slf4j
-public abstract class JdbcConfig implements EnvironmentAware {
+public class JdbcConfig implements EnvironmentAware {
 
     @Autowired
     protected Environment environment;
-    @Autowired
-    protected DataSource dataSource;
 
+    @Override
     public void setEnvironment(Environment environment){
         this.environment=environment;
     }
 
     @Bean
-    public SqlTemplate sqlTemplate(){
-        return new SqlTemplate(dataSource);
+    @ConditionalOnClass(JdbcTemplate.class)
+    public JdbcTemplate sqlTemplate(DataSource dataSource){
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    @ConditionalOnBean(JdbcTemplate.class)
+    public CommonQuery commonQuery(JdbcTemplate jdbcTemplate){
+        CommonQuery commonQuery=new CommonQuery();
+        commonQuery.setJdbcTemplate(jdbcTemplate);
+        return commonQuery;
     }
 
     /**
@@ -37,6 +49,7 @@ public abstract class JdbcConfig implements EnvironmentAware {
      */
     @Bean(destroyMethod="close",initMethod = "init")
     @Primary
+    @ConditionalOnMissingBean
     protected DataSource dataSource() {
         log.info("==========init db connection pool===============");
         DruidDataSource dataSource=new DruidDataSource();

@@ -20,7 +20,7 @@ import java.util.List;
 @Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
-@JSONType(ignores = {"demoMany2Many","demoMany2Manies"})
+@JSONType(ignores = {"demoOne2Many","demoMany2Manies"})
 public class Demo extends BaseEntity{
 
     public Demo(String name){

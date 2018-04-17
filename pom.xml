@@ -26,6 +26,7 @@
 		<fastjson.version>1.2.23</fastjson.version>
 		<!--数据库连接池版本-->
 		<druid.version>1.0.13</druid.version>
+		<spring.boot.version>2.0.1.RELEASE</spring.boot.version>
 	</properties>
 	
 	<profiles>
@@ -39,9 +40,9 @@
 			</properties>
 	  </profile>
 	   <profile>
-			<id>j17</id>
+			<id>j19</id>
 			<activation>
-				<jdk>1.7</jdk>
+				<jdk>1.9</jdk>
 			</activation>
 			<properties>
 				<doclint></doclint>
@@ -58,6 +59,8 @@
 		<module>module-wechat</module>
 		<module>module-template</module>
 		<module>module-RBAC</module>
+		<module>module-task</module>
+		<module>module-workflow</module>
 	</modules>
 
 	 <dependencyManagement>
@@ -66,7 +69,7 @@
 				<!-- Import dependency management from Spring Boot -->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>1.5.4.RELEASE</version>
+				<version>${spring.boot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
