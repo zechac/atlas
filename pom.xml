@@ -1,163 +1,163 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	
-	<!-- 项目坐标 -->
-	<groupId>com.hongdee.atlas</groupId>
-	<artifactId>base-project</artifactId>
-	<version>v0.1</version>
-	<packaging>pom</packaging>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<name>应用基础服务项目</name>
+    <!-- 项目坐标 -->
+    <groupId>org.zechac.atlas</groupId>
+    <artifactId>base-project</artifactId>
+    <version>v0.1</version>
+    <packaging>pom</packaging>
 
-	<!--变量配置 -->
-	<properties>
-		<module.version>0.0.1-SNAPSHOT</module.version>
-		<!-- lombok版本 -->
-		<lombok.version>1.14.8</lombok.version>
+    <name>应用基础服务项目</name>
 
-		<!-- apache commons -->
-		<apache.commons.long3.version>3.4</apache.commons.long3.version>
-		<commons.beanutils.version>1.8.3</commons.beanutils.version>
+    <!--变量配置 -->
+    <properties>
+        <module.version>0.0.1-SNAPSHOT</module.version>
+        <!-- lombok版本 -->
+        <lombok.version>1.14.8</lombok.version>
 
-		<junit.version>4.12</junit.version>
-		<javax.el.version>3.0.0</javax.el.version>
-		<javax.websocket.version>1.0</javax.websocket.version>
-		<fastjson.version>1.2.23</fastjson.version>
-		<!--数据库连接池版本-->
-		<druid.version>1.0.13</druid.version>
-		<spring.boot.version>2.0.1.RELEASE</spring.boot.version>
-	</properties>
-	
-	<profiles>
-	  <profile>
-			<id>j18</id>
-			<activation>
-				<jdk>1.8</jdk>
-			</activation>
-			<properties>
-				<doclint>-Xdoclint:none</doclint>
-			</properties>
-	  </profile>
-	   <profile>
-			<id>j19</id>
-			<activation>
-				<jdk>1.9</jdk>
-			</activation>
-			<properties>
-				<doclint></doclint>
-			</properties>
-	  </profile>
-	</profiles>
-	
-	<!--聚合模块 -->
-	<modules>
-		<module>spring-web-server</module>
-		<module>module-dynamic</module>
-		<module>module-metadata</module>
-		<module>module-framework</module>
-		<module>module-wechat</module>
-		<module>module-template</module>
-		<module>module-RBAC</module>
-		<module>module-task</module>
-		<module>module-workflow</module>
-	</modules>
+        <!-- apache commons -->
+        <apache.commons.long3.version>3.4</apache.commons.long3.version>
+        <commons.beanutils.version>1.8.3</commons.beanutils.version>
 
-	 <dependencyManagement>
-		 <dependencies>
-			<dependency>
-				<!-- Import dependency management from Spring Boot -->
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring.boot.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			 <!-- alibaba druid 数据库连接池 -->
-			 <dependency>
-				 <groupId>com.alibaba</groupId>
-				 <artifactId>druid</artifactId>
-				 <version>${druid.version}</version>
-			 </dependency>
-			 <!-- mysql驱动 -->
-			 <dependency>
-				 <groupId>mysql</groupId>
-				 <artifactId>mysql-connector-java</artifactId>
-				 <version>5.1.38</version>
-			 </dependency>
-             <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-             <dependency>
-                 <groupId>org.slf4j</groupId>
-                 <artifactId>slf4j-api</artifactId>
-                 <version>1.7.25</version>
-             </dependency>
+        <junit.version>4.12</junit.version>
+        <javax.el.version>3.0.0</javax.el.version>
+        <javax.websocket.version>1.0</javax.websocket.version>
+        <fastjson.version>1.2.23</fastjson.version>
+        <!--数据库连接池版本-->
+        <druid.version>1.0.13</druid.version>
+        <spring.boot.version>2.0.1.RELEASE</spring.boot.version>
+    </properties>
 
-         </dependencies>
-	</dependencyManagement>
-	
-	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<!--json-->
-		<dependency>
-			 <groupId>com.alibaba</groupId>
-			 <artifactId>fastjson</artifactId>
-			 <version>${fastjson.version}</version>
-		</dependency>
-		<!-- 在编译阶段动态生成代码 -->
-		<dependency>
-			 <groupId>org.projectlombok</groupId>
-			 <artifactId>lombok</artifactId>
-			 <version>${lombok.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.5</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-			<version>${junit.version}</version>
-		</dependency>
-	</dependencies>
-	
-	<repositories>
-		<repository>
-			<id>nexus</id>
-			<name>nexus repository</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-		</repository>
-	</repositories>
-	<!--maven插件库  -->
-	<pluginRepositories>
-		<pluginRepository>
-			<id>nexus</id>
-			<name>Team Nexus Repository</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-		</pluginRepository>
-	</pluginRepositories>
+    <profiles>
+        <profile>
+            <id>j18</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <doclint>-Xdoclint:none</doclint>
+            </properties>
+        </profile>
+        <profile>
+            <id>j19</id>
+            <activation>
+                <jdk>1.9</jdk>
+            </activation>
+            <properties>
+                <doclint></doclint>
+            </properties>
+        </profile>
+    </profiles>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <!--聚合模块 -->
+    <modules>
+        <module>spring-web-server</module>
+        <module>module-dynamic</module>
+        <module>module-metadata</module>
+        <module>module-framework</module>
+        <module>module-wechat</module>
+        <module>module-template</module>
+        <module>module-RBAC</module>
+        <module>module-task</module>
+        <module>module-workflow</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- alibaba druid 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <!-- mysql驱动 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>5.1.38</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!--json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <!-- 在编译阶段动态生成代码 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+            <version>${junit.version}</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <name>nexus repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+    <!--maven插件库  -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus</id>
+            <name>Team Nexus Repository</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

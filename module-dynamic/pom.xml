@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.hongdee.atlas</groupId>
-	<artifactId>module-dynamic</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <groupId>org.zechac.atlas</groupId>
+    <artifactId>module-dynamic</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-	<name>动态配置模块</name>
-	<description>
-		1.动态表单
-		2.动态列表
-		3.动态报表
-		4.动态打印
-		5.动态服务
-	</description>
+    <name>动态配置模块</name>
+    <description>
+        1.动态表单
+        2.动态列表
+        3.动态报表
+        4.动态打印
+        5.动态服务
+    </description>
 
-	<!-- Inherit defaults from Spring Boot -->
-	<parent>
-		<groupId>com.hongdee.atlas</groupId>
-		<artifactId>base-project</artifactId>
-		<version>v0.1</version>
-		<relativePath>../</relativePath>
-	</parent>
+    <!-- Inherit defaults from Spring Boot -->
+    <parent>
+        <groupId>org.zechac.atlas</groupId>
+        <artifactId>base-project</artifactId>
+        <version>v0.1</version>
+        <relativePath>../</relativePath>
+    </parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>com.hongdee.atlas</groupId>
-			<artifactId>module-common</artifactId>
-			<version>${module.version}</version>
-		</dependency>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+    <dependencies>
         <dependency>
-            <groupId>com.hongdee.atlas</groupId>
+            <groupId>org.zechac.atlas</groupId>
+            <artifactId>module-common</artifactId>
+            <version>${module.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zechac.atlas</groupId>
             <artifactId>module-mybatis</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
