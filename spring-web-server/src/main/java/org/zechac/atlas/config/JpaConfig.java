@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EnableJpaRepositories(basePackages = {"com.zechac.atlas.repo", "com.zechac.atlas.demo.repo"},
+@EnableJpaRepositories(basePackages = {"org.zechac.atlas.repo", "org.zechac.atlas.demo.repo"},
         entityManagerFactoryRef = "primaryEntityManagerFactory",
         transactionManagerRef = "primaryTransactionManager",
         repositoryBaseClass = BaseRepoImpl.class
