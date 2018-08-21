@@ -2,17 +2,27 @@ package org.zechac.atlas.common.repo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.query.Jpa21Utils;
+import org.springframework.data.jpa.repository.query.JpaEntityGraph;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.data.util.Optionals;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaUpdate;
-import javax.persistence.criteria.Root;
+import javax.persistence.LockModeType;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.*;
+
+import static org.springframework.data.jpa.repository.query.QueryUtils.toOrders;
 
 /**
  * Created by zhaozh on 2016-5-17.
@@ -96,6 +106,109 @@ public class BaseRepoImpl<T, ID extends Serializable> extends SimpleJpaRepositor
     @Override
     public int delete(CustomSpecification<ID> customSpecification) {
         return delete(getDomainClass(), customSpecification);
+    }
+
+    /**
+     * Applies the given {@link Specification} to the given {@link CriteriaQuery}.
+     *
+     * @param spec can be {@literal null}.
+     * @param domainClass must not be {@literal null}.
+     * @param query must not be {@literal null}.
+     * @return
+     */
+    private <S, U extends T> Root<U> applySpecificationToCriteria(@Nullable Specification<U> spec, Class<U> domainClass,
+                                                                  CriteriaQuery<S> query) {
+
+        Assert.notNull(domainClass, "Domain class must not be null!");
+        Assert.notNull(query, "CriteriaQuery must not be null!");
+
+        Root<U> root = query.from(domainClass);
+
+        if (spec == null) {
+            return root;
+        }
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        Predicate predicate = spec.toPredicate(root, query, builder);
+
+        if (predicate != null) {
+            query.where(predicate);
+        }
+
+        return root;
+    }
+
+    /**
+     * Creates a {@link TypedQuery} for the given {@link Specification} and {@link Sort}.
+     *
+     * @param spec can be {@literal null}.
+     * @param domainClass must not be {@literal null}.
+     * @param sort must not be {@literal null}.
+     * @return
+     */
+    @Override
+    protected <S extends T> TypedQuery<S> getQuery(@Nullable Specification<S> spec, Class<S> domainClass, Sort sort) {
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<S> query = builder.createQuery(domainClass);
+
+        Root<S> root = applySpecificationToCriteria(spec, domainClass, query);
+        if(query.getSelection()==null) {
+            query.select(root);
+        }
+
+        if (sort.isSorted()) {
+            query.orderBy(toOrders(sort, root, builder));
+        }
+
+        return applyRepositoryMethodMetadata(entityManager.createQuery(query));
+    }
+
+    private <S> TypedQuery<S> applyRepositoryMethodMetadata(TypedQuery<S> query) {
+
+        if (getRepositoryMethodMetadata() == null) {
+            return query;
+        }
+
+        LockModeType type = getRepositoryMethodMetadata().getLockModeType();
+        TypedQuery<S> toReturn = type == null ? query : query.setLockMode(type);
+
+        applyQueryHints(toReturn);
+
+        return toReturn;
+    }
+
+    private void applyQueryHints(Query query) {
+        if(getRepositoryMethodMetadata() == null){
+            return;
+        }
+
+        for (Map.Entry<String, Object> hint : asMap().entrySet()) {
+            query.setHint(hint.getKey(), hint.getValue());
+        }
+    }
+
+    public Map<String, Object> asMap() {
+
+        Map<String, Object> hints = new HashMap<>();
+
+        hints.putAll(getRepositoryMethodMetadata().getQueryHints());
+        hints.putAll(getFetchGraphs());
+
+        return hints;
+    }
+
+    private Map<String, Object> getFetchGraphs() {
+        Optional<EntityManager> optional=Optional.of(entityManager);
+        return org.springframework.data.util.Optionals
+                .mapIfAllPresent(optional, getRepositoryMethodMetadata().getEntityGraph(),
+                        (em, graph) -> Jpa21Utils.tryGetFetchGraphHints(em, getEntityGraph(graph), jpaEntityInformation.getJavaType()))
+                .orElse(Collections.emptyMap());
+    }
+
+    private JpaEntityGraph getEntityGraph(EntityGraph entityGraph) {
+        String fallbackName = jpaEntityInformation.getEntityName() + "." + getRepositoryMethodMetadata().getMethod().getName();
+        return new JpaEntityGraph(entityGraph, fallbackName);
     }
 
 }
