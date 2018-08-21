@@ -1,5 +1,6 @@
 package org.zechac.atlas.common.repo;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,7 +13,7 @@ import java.util.List;
  * Created by zhaozh on 2016-5-17.
  */
 @NoRepositoryBean
-public interface BaseRepo<T, I extends Serializable> extends PagingAndSortingRepository<T, I>, JpaSpecificationExecutor<T> {
+public interface BaseRepo<T, I extends Serializable> extends JpaRepository<T, I>, JpaSpecificationExecutor<T> {
 
     EntityManager getEntityManager();
 

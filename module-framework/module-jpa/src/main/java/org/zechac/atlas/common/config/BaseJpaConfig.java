@@ -30,11 +30,9 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ConditionalOnBean(DataSource.class)
 @Slf4j
-@Primary
 public class BaseJpaConfig {
 
     @Bean
-    @Primary
     @ConditionalOnMissingBean(HibernateJpaVendorAdapter.class)
     public HibernateJpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
@@ -46,9 +44,8 @@ public class BaseJpaConfig {
      *
      * @return
      */
-    @Bean(name = "primaryEntityManagerFactory")
-    @Primary
-    @ConditionalOnMissingBean(AbstractEntityManagerFactoryBean.class)
+    @Bean(name = "entityManagerFactory")
+    @ConditionalOnMissingBean(EntityManagerFactory.class)
     public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(Environment environment, DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 
@@ -86,8 +83,7 @@ public class BaseJpaConfig {
 
     }
 
-    @Bean(name = "primaryTransactionManager")
-    @Primary
+    @Bean
     @ConditionalOnMissingBean(JpaTransactionManager.class)
     public JpaTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();

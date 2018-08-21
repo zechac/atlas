@@ -57,12 +57,14 @@
         </dependency>
         <dependency>
             <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-framework</artifactId>
+            <artifactId>module-common</artifactId>
             <version>${module.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.zechac.atlas</groupId>
+            <artifactId>module-jpa</artifactId>
+            <version>${module.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
