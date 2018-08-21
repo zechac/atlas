@@ -3,8 +3,6 @@ package org.zechac.atlas.demo.entity;
 import org.zechac.atlas.common.constant.Constant;
 import org.zechac.atlas.common.jpa.entity.BaseEntity;
 import lombok.Data;
-import org.zechac.atlas.common.constant.Constant;
-import org.zechac.atlas.common.jpa.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;

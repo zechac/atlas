@@ -2,7 +2,6 @@ package org.zechac.atlas.repo;
 
 import org.zechac.atlas.common.repo.BaseRepo;
 import org.zechac.atlas.entity.Task;
-import org.zechac.atlas.common.repo.BaseRepo;
 
 /**
  * Created by 姚猛 on 2018/3/23.

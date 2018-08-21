@@ -18,7 +18,7 @@ import java.util.Date;
 @Data
 @Access(AccessType.FIELD)
 @EntityListeners(AuditingEntityListener.class)
-public class AuditingEntity extends IDEntity {
+public class AuditingEntity extends StringId {
     @CreatedBy
     @Column(name = "create_user_id", length = 32, updatable = false, nullable = true)
     protected String createUserId;

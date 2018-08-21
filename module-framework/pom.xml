@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>应用基础服务项目框架</name>
+    <name>java web应用基础服务项目框架</name>
 
     <!-- Inherit defaults from Spring Boot -->
     <parent>
@@ -26,6 +26,7 @@
     <modules>
         <module>module-common</module>
         <module>module-mybatis</module>
+		<module>module-jpa</module>
     </modules>
     <dependencyManagement>
         <dependencies>

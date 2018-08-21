@@ -57,8 +57,10 @@
         </dependency>
         <dependency>
             <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-common</artifactId>
+            <artifactId>module-framework</artifactId>
             <version>${module.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
 
         <dependency>

@@ -2,7 +2,6 @@ package org.zechac.atlas.common.jpa.query;
 
 import org.zechac.atlas.common.exception.JpaMapQueryException;
 import org.apache.commons.lang3.StringUtils;
-import org.zechac.atlas.common.exception.JpaMapQueryException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Path;

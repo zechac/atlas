@@ -40,5 +40,11 @@
             <artifactId>module-mybatis</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.zechac.atlas</groupId>
+            <artifactId>module-jpa</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

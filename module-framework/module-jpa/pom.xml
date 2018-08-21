@@ -4,18 +4,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.zechac.atlas</groupId>
-    <artifactId>module-metadata</artifactId>
+    <artifactId>module-jpa</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>元数据模块</name>
-    <description>元数据模块</description>
+    <name>spring data jpa 集成</name>
+    <description>jap 模块 可以使用 MapQuery </description>
 
     <!-- Inherit defaults from Spring Boot -->
     <parent>
         <groupId>org.zechac.atlas</groupId>
-        <artifactId>base-project</artifactId>
-        <version>v0.1</version>
+        <artifactId>module-framework</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
 
@@ -26,17 +26,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-common</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <!-- mysql驱动 -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -47,6 +43,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.4.0</version>
+            <scope>runtime</scope>
         </dependency>
         <!--query dsl-->
         <dependency>
@@ -59,13 +61,21 @@
             <scope>provided</scope>
         </dependency>
         <!--query dsl end-->
+
+        <!-- alibaba druid 数据库连接池 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/cn.guoyukun.jdbc/oracle-ojdbc6 -->
+        <dependency>
+            <groupId>cn.guoyukun.jdbc</groupId>
+            <artifactId>oracle-ojdbc6</artifactId>
+            <version>11.2.0.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-jpa</artifactId>
+            <artifactId>module-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -90,20 +100,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
         </plugins>
     </build>

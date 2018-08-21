@@ -1,8 +1,6 @@
 package org.zechac.atlas.common.config;
 
 import org.zechac.atlas.common.convert.StringToDateConverter;
-import org.zechac.atlas.common.jpa.query.MapQueryBuilder;
-import org.zechac.atlas.common.jpa.query.StringMapQueryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -34,33 +32,6 @@ public class BaseAppConfig {
 
     public void configConversionService(DefaultConversionService defaultConversionService) {
 
-    }
-
-    /**
-     * 基于前台参数的查询构建器
-     * {@link MapQueryBuilder}
-     *
-     * @param conversionService
-     * @return
-     */
-    @Bean
-    public MapQueryBuilder mapQueryBuilder(ConversionService conversionService) {
-        MapQueryBuilder cus = createMapQueryBuilder();
-        if (cus != null) {
-            return cus;
-        }
-        StringMapQueryBuilder stringMapQueryBuilder = new StringMapQueryBuilder();
-        stringMapQueryBuilder.setConversionService(conversionService);
-        return stringMapQueryBuilder;
-    }
-
-    /**
-     * 自定义MapQueryBuilder
-     *
-     * @return
-     */
-    public MapQueryBuilder createMapQueryBuilder() {
-        return null;
     }
 
 }
