@@ -5,7 +5,7 @@
 
     <groupId>org.zechac.atlas</groupId>
     <artifactId>module-jpa</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>v1.0</version>
     <packaging>jar</packaging>
 
     <name>spring data jpa 集成</name>

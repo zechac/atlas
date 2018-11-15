@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public abstract class AbstractMapQueryBuilder implements MapQueryBuilder<String> {
 
-    protected static final String SPLIT_CONDITON = "\\$";
+    protected static final String SPLIT_CONDITION = "\\$";
     protected static final String SPLIT_ENTITY = "__";
     protected static final String SPLIT_RELATION = "_";
     protected static final String SPLIT_GROUP = "_";

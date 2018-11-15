@@ -5,7 +5,7 @@
     <!-- 项目坐标 -->
     <groupId>org.zechac.atlas</groupId>
     <artifactId>base-project</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>v0.1</version>
     <packaging>pom</packaging>
 
     <name>java web应用基础服务项目</name>
