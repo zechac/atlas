@@ -10,7 +10,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @Data
 @Access(AccessType.FIELD)
-public class AutoIncrementId {
+public class AutoIncrementId implements SuperEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

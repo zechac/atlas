@@ -10,5 +10,5 @@ import java.io.Serializable;
  */
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class SuperEntity implements Serializable {
+public interface SuperEntity extends Serializable {
 }

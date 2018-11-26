@@ -11,7 +11,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @Data
 @Access(AccessType.FIELD)
-public class StringId extends SuperEntity {
+public class StringId implements SuperEntity {
     @Id
     @GeneratedValue(generator = "generatedkey")
     @GenericGenerator(name = "generatedkey", strategy = "uuid2")
