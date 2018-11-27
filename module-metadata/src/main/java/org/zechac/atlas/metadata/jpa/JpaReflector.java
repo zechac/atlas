@@ -1,12 +1,10 @@
 package org.zechac.atlas.metadata.jpa;
 
 import org.zechac.atlas.common.utils.StringUtil;
-import org.zechac.atlas.entity.Metadata;
-import org.zechac.atlas.entity.MetadataGroup;
+import org.zechac.atlas.metadata.entity.Metadata;
+import org.zechac.atlas.metadata.entity.MetadataGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.zechac.atlas.entity.Metadata;
-import org.zechac.atlas.entity.MetadataGroup;
 
 import javax.persistence.Column;
 import javax.persistence.EntityManagerFactory;

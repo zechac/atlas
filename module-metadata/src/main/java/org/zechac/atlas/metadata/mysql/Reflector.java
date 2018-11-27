@@ -1,7 +1,7 @@
 package org.zechac.atlas.metadata.mysql;
 
-import org.zechac.atlas.entity.Metadata;
-import org.zechac.atlas.entity.MetadataGroup;
+import org.zechac.atlas.metadata.entity.Metadata;
+import org.zechac.atlas.metadata.entity.MetadataGroup;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
