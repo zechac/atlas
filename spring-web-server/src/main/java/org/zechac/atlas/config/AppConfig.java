@@ -1,4 +1,4 @@
-package org.zechac.atlas.metadata.config;
+package org.zechac.atlas.config;
 
 import org.zechac.atlas.common.config.BaseAppConfig;
 import org.springframework.context.annotation.Configuration;

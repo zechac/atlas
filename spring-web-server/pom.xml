@@ -27,43 +27,8 @@
     <dependencies>
         <dependency>
             <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-task</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-workflow</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-template</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-dynamic</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-metadata</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
             <artifactId>module-RBAC</artifactId>
             <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-common</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-jpa</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

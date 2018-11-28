@@ -53,10 +53,10 @@ public class JdbcConfig implements EnvironmentAware {
     protected DataSource dataSource() {
         log.info("==========init db connection pool===============");
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driver"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.username"));
-        dataSource.setPassword(environment.getProperty("jdbc.password"));
+        dataSource.setDriverClassName(environment.getProperty("spring.datasource.driver-class-name"));
+        dataSource.setUrl(environment.getProperty("spring.datasource.url"));
+        dataSource.setUsername(environment.getProperty("spring.datasource.username"));
+        dataSource.setPassword(environment.getProperty("spring.datasource.password"));
         dataSource.setValidationQuery(environment.getProperty("jdbc.validationQuery"));
         try {
             if (Boolean.valueOf(environment.getProperty("druid.enableDataSourceMonitor", "true"))) {
