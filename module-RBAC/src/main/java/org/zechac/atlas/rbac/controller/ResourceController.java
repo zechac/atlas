@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("menu")
+@RequestMapping("api/rbac/resource")
 public class ResourceController {
 
     @Autowired

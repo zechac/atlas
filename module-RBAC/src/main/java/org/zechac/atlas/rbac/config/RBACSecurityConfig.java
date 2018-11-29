@@ -14,12 +14,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.zechac.atlas.rbac.security.LoginFilter;
+import org.zechac.atlas.rbac.security.MAccessDecisionManager;
+import org.zechac.atlas.rbac.security.MFilterSecurityInterceptor;
 import org.zechac.atlas.rbac.security.SecurityUserService;
 
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private MAccessDecisionManager mAccessDecisionManager;
+
+    @Bean
+    public MFilterSecurityInterceptor mFilterSecurityInterceptor(){
+        MFilterSecurityInterceptor mFilterSecurityInterceptor= new MFilterSecurityInterceptor();
+        mFilterSecurityInterceptor.setAccessDecisionManager(mAccessDecisionManager);
+        return mFilterSecurityInterceptor;
+    }
+
+    @Bean
+    public LoginFilter loginFilter() throws Exception {
+        LoginFilter loginFilter= new LoginFilter();
+        loginFilter.setAuthenticationManager(authenticationManager());
+        return loginFilter;
+    }
 
     @Bean
     protected UserDetailsService customUserService() {
@@ -63,9 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             // 允许对于网站静态资源的无授权访问
             // 对于获取token的rest api要允许匿名访问
-            .antMatchers("/admin/api/**").access("hasAuthority('ROLE_ADMIN')")
-            .anyRequest().anonymous().and().formLogin().loginPage("/admin/login")
-            .failureUrl("/admin/login?error").permitAll().and().logout().permitAll();
+            .anyRequest().anonymous().and().formLogin().loginPage("/login")
+            .failureUrl("/login?error").permitAll().and().logout().permitAll();
             //httpSecurity.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
             // 禁用缓存
             httpSecurity.headers().cacheControl();

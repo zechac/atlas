@@ -13,8 +13,8 @@ import java.util.List;
  * mybatis-query
  * {
  * kind:"mybatis-query",
- * template:{
- * select:[] //select template
+ * templates:{
+ * select:[] //select templates
  * },
  * name:"step1"
  * }
@@ -31,7 +31,7 @@ public class MybatisSelect implements Kind {
         if (object.containsKey("name")) {
             this.name = object.getString("name");
         }
-        this.template = object.getObject("template", SelectTemplate.class);
+        this.template = object.getObject("templates", SelectTemplate.class);
         this.mybatisQuery = mybatisQuery;
     }
 

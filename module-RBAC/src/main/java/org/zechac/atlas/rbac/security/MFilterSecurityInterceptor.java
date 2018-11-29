@@ -1,5 +1,6 @@
 package org.zechac.atlas.rbac.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
@@ -40,7 +41,7 @@ public class MFilterSecurityInterceptor extends AbstractSecurityInterceptor
     public SecurityMetadataSource obtainSecurityMetadataSource() {
         return this.securityMetadataSource;
     }
-
+    @Autowired
     public void setSecurityMetadataSource(
             FilterInvocationSecurityMetadataSource newSource) {
         this.securityMetadataSource = newSource;

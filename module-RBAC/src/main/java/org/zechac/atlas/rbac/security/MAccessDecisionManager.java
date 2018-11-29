@@ -8,6 +8,7 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -43,7 +44,7 @@ import java.util.Iterator;
  supports(Class)方法被安全拦截器实现调用，
  包含安全拦截器将显示的AccessDecisionManager支持安全对象的类型。
  */
-@Service
+@Component
 public class MAccessDecisionManager implements AccessDecisionManager {
 
     public void decide( Authentication authentication, Object object,

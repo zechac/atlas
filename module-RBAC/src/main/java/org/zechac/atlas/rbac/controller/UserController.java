@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("api/rbac/user")
 public class UserController {
 
     @Autowired
@@ -25,6 +25,12 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    /**
+     * 分页查询
+     * @param pageable
+     * @param map
+     * @return
+     */
     @RequestMapping("page")
     public JsonResponse list(Pageable pageable, @RequestParam Map map) {
         Map query = RequestParamUtils.mapRequestParam(map, "s_");
@@ -38,7 +44,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @RequestMapping("{id}")
+    @RequestMapping("get/{id}")
     public JsonResponse getUserById(@PathVariable String id) {
         User user = userService.findById(id);
         if (user != null) {
@@ -77,7 +83,7 @@ public class UserController {
      *
      * @return
      */
-    @RequestMapping("login")
+    @RequestMapping(value = "login",method = RequestMethod.POST)
     public JsonResponse login(User user) {
         User user1 = userService.login(user);
         if (user1 != null) {
