@@ -14,10 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.zechac.atlas.rbac.security.LoginFilter;
-import org.zechac.atlas.rbac.security.MAccessDecisionManager;
-import org.zechac.atlas.rbac.security.MFilterSecurityInterceptor;
-import org.zechac.atlas.rbac.security.SecurityUserService;
+import org.zechac.atlas.rbac.security.*;
 
 public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -34,6 +31,8 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginFilter loginFilter() throws Exception {
         LoginFilter loginFilter= new LoginFilter();
+        loginFilter.setAuthenticationSuccessHandler(new MAuthenticationSuccessHandler("/index"));
+        loginFilter.setAuthenticationFailureHandler(new MAuthenticationFailureHandler("/login?success=false"));
         loginFilter.setAuthenticationManager(authenticationManager());
         return loginFilter;
     }

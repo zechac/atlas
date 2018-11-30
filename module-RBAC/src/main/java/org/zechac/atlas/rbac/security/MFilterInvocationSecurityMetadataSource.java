@@ -29,16 +29,16 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
     public void loadResourceDefine(){
         resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-        //取得用户信息
-        List<User> userList = userService.findAll();
-        //取得资源与角色列表
-        List<Resource> resourceList = resourceService.findAll();
-        System.out.println(resourceList);
-        for (Resource resource : resourceList) {
-            Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
-            //atts.add(new SecurityConfig(resource.getRoleName() ));
-            //resourceMap.put(resource.getResString(), atts);
-        }
+//        //取得用户信息
+//        List<User> userList = userService.findAll();
+//        //取得资源与角色列表
+//        List<Resource> resourceList = resourceService.findAll();
+//        System.out.println(resourceList);
+//        for (Resource resource : resourceList) {
+//            Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
+//            //atts.add(new SecurityConfig(resource.getRoleName() ));
+//            //resourceMap.put(resource.getResString(), atts);
+//        }
     }
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {

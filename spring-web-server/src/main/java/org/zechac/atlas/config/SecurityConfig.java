@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.zechac.atlas.rbac.config.RBACSecurityConfig;
 import org.zechac.atlas.rbac.security.LoginFilter;
 import org.zechac.atlas.rbac.security.MAuthenticationFailureHandler;
+import org.zechac.atlas.rbac.security.MAuthenticationSuccessHandler;
 import org.zechac.atlas.rbac.security.MFilterSecurityInterceptor;
 
 @Configuration
@@ -20,6 +21,8 @@ public class SecurityConfig extends RBACSecurityConfig {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterAt(mFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
         httpSecurity
             // 由于使用的是JWT，我们这里不需要csrf
             .csrf().disable()
@@ -32,15 +35,11 @@ public class SecurityConfig extends RBACSecurityConfig {
             .antMatchers("/api/**").hasAnyRole("ROLE_User")
             .anyRequest().anonymous()
             .and()
-            .formLogin().loginPage("/login").loginProcessingUrl("/login")
-                .failureHandler(new MAuthenticationFailureHandler("/login"))
-                .permitAll()
+            .formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll()
             .and().logout().permitAll();
         //httpSecurity.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
         // 禁用缓存
         httpSecurity.headers().cacheControl();
-        httpSecurity.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterAt(mFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
     }
 
 }
