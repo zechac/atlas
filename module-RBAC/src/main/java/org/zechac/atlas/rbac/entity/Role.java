@@ -24,4 +24,7 @@ public class Role extends BaseEntity {
 
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
+
+    @ManyToMany
+    private List<Resource> resources;
 }

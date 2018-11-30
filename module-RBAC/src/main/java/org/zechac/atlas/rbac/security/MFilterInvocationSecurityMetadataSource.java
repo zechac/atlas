@@ -2,21 +2,30 @@ package org.zechac.atlas.rbac.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.zechac.atlas.rbac.entity.Resource;
+import org.zechac.atlas.rbac.entity.Role;
 import org.zechac.atlas.rbac.entity.User;
 import org.zechac.atlas.rbac.service.ResourceService;
 import org.zechac.atlas.rbac.service.RoleService;
 import org.zechac.atlas.rbac.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Component
+@Transactional
 public class MFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+
+    // 资源权限集合
+    private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
+
     @Autowired
     public RoleService roleService ;
     @Autowired
@@ -24,30 +33,33 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
     @Autowired
     private ResourceService resourceService ;
 
-    private AntPathRequestMatcher urlMatcher = new AntPathRequestMatcher("/**");
-    // 资源权限集合
-    private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
+    public MFilterInvocationSecurityMetadataSource() {
+        loadResourceDefine();
+    }
+
     public void loadResourceDefine(){
         resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-//        //取得用户信息
-//        List<User> userList = userService.findAll();
-//        //取得资源与角色列表
-//        List<Resource> resourceList = resourceService.findAll();
-//        System.out.println(resourceList);
-//        for (Resource resource : resourceList) {
-//            Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
-//            //atts.add(new SecurityConfig(resource.getRoleName() ));
-//            //resourceMap.put(resource.getResString(), atts);
-//        }
+        //取得资源与角色列表
+        List<Resource> resourceList = resourceService.findAll();
+        System.out.println(resourceList);
+        for (Resource resource : resourceList) {
+            Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
+            List<Role> roles=roleService.findByResource(resource);
+            for(Role role :roles){
+                atts.add(new SecurityConfig(role.getCode()));
+            }
+            resourceMap.put(resource.getCode(), atts);
+        }
     }
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-        loadResourceDefine();//防止无法注入问题
+        //loadResourceDefine();//防止无法注入问题
         // guess object is a URL.
         HttpServletRequest request = ((FilterInvocation) o).getRequest();
         Iterator<String> ite = resourceMap.keySet().iterator();
         while (ite.hasNext()) {
             String resURL = ite.next();
+            AntPathRequestMatcher urlMatcher = new AntPathRequestMatcher("/**");
             if (urlMatcher.matches(request)) {
                 return resourceMap.get(resURL);
             }
@@ -56,7 +68,14 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
     }
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        return null;
+        Set<ConfigAttribute> allAttributes = new HashSet<>();
+
+        for (Map.Entry<String, Collection<ConfigAttribute>> entry : resourceMap
+                .entrySet()) {
+            allAttributes.addAll(entry.getValue());
+        }
+
+        return allAttributes;
     }
     @Override
     public boolean supports(Class<?> aClass) {
