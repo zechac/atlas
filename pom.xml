@@ -5,7 +5,7 @@
     <!-- 项目坐标 -->
     <groupId>org.zechac.atlas</groupId>
     <artifactId>base-project</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>pom</packaging>
 
     <name>java web应用基础服务项目</name>
@@ -14,7 +14,7 @@
     <properties>
         <module.version>0.0.1-SNAPSHOT</module.version>
         <!-- lombok版本 -->
-        <lombok.version>1.14.8</lombok.version>
+        <lombok.version>1.18.4</lombok.version>
 
         <!-- apache commons -->
         <apache.commons.long3.version>3.4</apache.commons.long3.version>
@@ -149,12 +149,12 @@
     </pluginRepositories>
     <distributionManagement>
         <repository>
-            <id>releases</id>
+            <id>nexus</id>
             <name>Nexus Release Repository</name>
             <url>http://115.29.100.191:8081/nexus/content/repositories/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>nexus</id>
             <name>Nexus snapshot Repository</name>
             <url>http://115.29.100.191:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>

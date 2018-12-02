@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.zechac.atlas</groupId>
         <artifactId>base-project</artifactId>
-        <version>v0.1</version>
+        <version>0.1.0</version>
         <relativePath>../</relativePath>
     </parent>
 
@@ -85,7 +85,7 @@
         <dependency>
             <groupId>org.zechac.atlas</groupId>
             <artifactId>module-jpa</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
 

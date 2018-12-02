@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.zechac.atlas</groupId>
         <artifactId>base-project</artifactId>
-        <version>v0.1</version>
+        <version>0.1.0</version>
         <relativePath>../</relativePath>
     </parent>
 
@@ -28,11 +28,6 @@
         <dependency>
             <groupId>org.zechac.atlas</groupId>
             <artifactId>module-common</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zechac.atlas</groupId>
-            <artifactId>module-dynamic</artifactId>
             <version>${module.version}</version>
         </dependency>
         <dependency>
@@ -53,20 +48,20 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--query dsl-->
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <!--query dsl end-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.zechac.atlas</groupId>
+            <artifactId>module-jpa</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

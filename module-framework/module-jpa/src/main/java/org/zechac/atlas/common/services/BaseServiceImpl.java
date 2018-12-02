@@ -182,11 +182,11 @@ public abstract class BaseServiceImpl<K extends SuperEntity, T extends BaseRepo>
         return (K) entityDao.findById(id).orElse(null);
     }
 
-    public Iterable findAll() {
+    public List<K> findAll() {
         return entityDao.findAll();
     }
 
-    public Iterable findAll(Sort sort) {
+    public List<K> findAll(Sort sort) {
         return entityDao.findAll(sort);
     }
 

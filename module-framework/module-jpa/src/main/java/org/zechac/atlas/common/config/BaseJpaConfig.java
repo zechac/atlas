@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.zechac.atlas.common.jpa.query.MapQueryBuilder;
 import org.zechac.atlas.common.jpa.query.StringMapQueryBuilder;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.SharedCacheMode;
 import javax.sql.DataSource;
@@ -31,66 +32,6 @@ import java.util.Properties;
 @ConditionalOnBean(DataSource.class)
 @Slf4j
 public class BaseJpaConfig {
-
-    @Bean
-    @ConditionalOnMissingBean(HibernateJpaVendorAdapter.class)
-    public HibernateJpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-        return jpaVendorAdapter;
-    }
-
-    /**
-     * 初始化jpa实体工厂
-     *
-     * @return
-     */
-    @Bean(name = "entityManagerFactory")
-    @ConditionalOnMissingBean(EntityManagerFactory.class)
-    public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean(Environment environment, DataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-
-        entityManagerFactory.setDataSource(dataSource);
-        //获取需要检测的包
-        String[] packages = environment.getRequiredProperty("jpa.entity.packages").split("[;,]");
-
-        entityManagerFactory.setPackagesToScan(packages);
-
-        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
-
-        entityManagerFactory.setPersistenceUnitName("jpaPersistenceUnit");
-        entityManagerFactory.setSharedCacheMode(SharedCacheMode.ENABLE_SELECTIVE);
-
-        //jpa属性
-        Properties jpaProperties = new Properties();
-        jpaProperties.setProperty("hibernate.physical_naming_strategy", "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
-        jpaProperties.setProperty("hibernate.show_sql", environment.getProperty("hibernate.show_sql", "true"));
-        jpaProperties.setProperty("hibernate.format_sql", environment.getProperty("hibernate.format_sql", "true"));
-        jpaProperties.setProperty("hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto", "update"));
-        jpaProperties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect"));
-        if ("true".equals(environment.getProperty("hibernate.cache.use_second_level_cache", "false"))) {
-            jpaProperties.setProperty("hibernate.cache.use_second_level_cachel", environment.getProperty("hibernate.cache.use_second_level_cache", "true"));
-            jpaProperties.setProperty("hibernate.cache.use_query_cache", environment.getProperty("hibernate.cache.use_query_cache", "true"));
-            jpaProperties.setProperty("hibernate.cache.region.factory_class", environment.getProperty("hibernate.cache.region.factory_class", "org.hibernate.cache.redis.hibernate5.SingletonRedisRegionFactory"));
-            jpaProperties.setProperty("hibernate.cache.region_prefix", environment.getProperty("hibernate.cache.region_prefix", "hibernate"));
-        }
-        configJpaProperties(jpaProperties);
-        entityManagerFactory.setJpaProperties(jpaProperties);
-
-        return entityManagerFactory;
-    }
-
-    public void configJpaProperties(Properties jpaProperties) {
-
-    }
-
-    @Bean
-    @ConditionalOnMissingBean(JpaTransactionManager.class)
-    public JpaTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
-        JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
-        jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
-        return jpaTransactionManager;
-    }
-
     /**
      * 基于前台参数的查询构建器
      * {@link MapQueryBuilder}

@@ -186,7 +186,7 @@ public class StringMapQueryBuilder extends AbstractMapQueryBuilder {
         for (Map.Entry<String, Object> s : queryConditions.entrySet()) {
             x++;
             String predicateS = s.getKey();
-            String[] split = predicateS.split(SPLIT_CONDITON);
+            String[] split = predicateS.split(SPLIT_CONDITION);
             String condition = "";
             if (split.length > 1) {
                 condition = split[1];

@@ -5,7 +5,7 @@
 
     <groupId>org.zechac.atlas</groupId>
     <artifactId>module-jpa</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>spring data jpa 集成</name>
@@ -67,12 +67,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/cn.guoyukun.jdbc/oracle-ojdbc6 -->
-        <dependency>
-            <groupId>cn.guoyukun.jdbc</groupId>
-            <artifactId>oracle-ojdbc6</artifactId>
-            <version>11.2.0.3.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.zechac.atlas</groupId>
             <artifactId>module-common</artifactId>
