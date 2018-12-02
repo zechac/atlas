@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 菜单
  */
-@Table(name = "t_bc_menu")
+@Table(name = "t_bc_resource")
 @Entity
 @Data
 @JSONType(ignores = {"parent", "children"})
@@ -53,5 +53,7 @@ public class Resource extends BaseEntity {
     private String dynamicPageId;
 
     private String description;
+    @Column(name = "c_order")
+    private int order;
 
 }

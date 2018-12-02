@@ -21,10 +21,14 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MAccessDecisionManager mAccessDecisionManager;
 
+    @Autowired
+    private MFilterInvocationSecurityMetadataSource mFilterInvocationSecurityMetadataSource;
+
     @Bean
     public MFilterSecurityInterceptor mFilterSecurityInterceptor(){
         MFilterSecurityInterceptor mFilterSecurityInterceptor= new MFilterSecurityInterceptor();
         mFilterSecurityInterceptor.setAccessDecisionManager(mAccessDecisionManager);
+        mFilterSecurityInterceptor.setSecurityMetadataSource(mFilterInvocationSecurityMetadataSource);
         return mFilterSecurityInterceptor;
     }
 
