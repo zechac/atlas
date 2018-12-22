@@ -1,5 +1,6 @@
 package org.zechac.atlas.rbac.security;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -21,7 +22,7 @@ import java.util.*;
 
 @Component
 @Transactional
-public class MFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+public class MFilterInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource, InitializingBean {
 
     // 资源权限集合
     private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
@@ -34,14 +35,13 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
     private ResourceService resourceService ;
 
     public MFilterInvocationSecurityMetadataSource() {
-        loadResourceDefine();
     }
 
     public void loadResourceDefine(){
         resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
         //取得资源与角色列表
         List<Resource> resourceList = resourceService.findAll();
-        System.out.println(resourceList);
+        //System.out.println(resourceList);
         for (Resource resource : resourceList) {
             Collection<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
             List<Role> roles=roleService.findByResource(resource);
@@ -80,5 +80,10 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
     @Override
     public boolean supports(Class<?> aClass) {
         return true;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        loadResourceDefine();
     }
 }

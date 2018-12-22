@@ -13,6 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.zechac.atlas.rbac.security.*;
 
@@ -20,11 +22,14 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private MAccessDecisionManager mAccessDecisionManager;
+    @Autowired
+    private FilterInvocationSecurityMetadataSource  metadataSource;
 
     @Bean
     public MFilterSecurityInterceptor mFilterSecurityInterceptor(){
         MFilterSecurityInterceptor mFilterSecurityInterceptor= new MFilterSecurityInterceptor();
         mFilterSecurityInterceptor.setAccessDecisionManager(mAccessDecisionManager);
+        mFilterSecurityInterceptor.setSecurityMetadataSource(metadataSource);
         return mFilterSecurityInterceptor;
     }
 
@@ -70,19 +75,8 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            // 由于使用的是JWT，我们这里不需要csrf
-            .csrf().disable()
-            // 基于token，所以不需要session
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .authorizeRequests()
-            //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            // 允许对于网站静态资源的无授权访问
-            // 对于获取token的rest api要允许匿名访问
-            .anyRequest().anonymous().and().formLogin().loginPage("/login")
-            .failureUrl("/login?error").permitAll().and().logout().permitAll();
-            //httpSecurity.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-            // 禁用缓存
-            httpSecurity.headers().cacheControl();
+        httpSecurity.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterAt(mFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+        httpSecurity.csrf().disable().headers().frameOptions().sameOrigin();
     }
 }
