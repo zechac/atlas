@@ -50,7 +50,7 @@ public class MAccessDecisionManager implements AccessDecisionManager {
     public void decide( Authentication authentication, Object object,
                         Collection<ConfigAttribute> configAttributes)
             throws AccessDeniedException, InsufficientAuthenticationException{
-        if( configAttributes == null ) {
+        if( configAttributes == null ||!configAttributes.iterator().hasNext()) {
             return ;
         }
 
@@ -62,7 +62,6 @@ public class MAccessDecisionManager implements AccessDecisionManager {
 
             //ga 为用户所被赋予的权限。 needRole 为访问相应的资源应该具有的权限。
             for( GrantedAuthority ga: authentication.getAuthorities()){
-
                 if(needRole.trim().equals(ga.getAuthority().trim())){
 
                     return;
@@ -71,7 +70,7 @@ public class MAccessDecisionManager implements AccessDecisionManager {
             }
 
         }
-
+        //没有配置权限管理
         throw new AccessDeniedException("权限不足");
 
     }

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 菜单
  */
-@Table(name = "t_bc_menu")
+@Table(name = "rabc_resource")
 @Entity
 @Data
 @JSONType(ignores = {"parent", "children"})

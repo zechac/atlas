@@ -48,9 +48,16 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
             for(Role role :roles){
                 atts.add(new SecurityConfig(role.getCode()));
             }
-            resourceMap.put(resource.getCode(), atts);
+            resourceMap.put(resource.getUrl(), atts);
         }
     }
+
+    /**
+     * 获取访问资源需要的角色
+     * @param o
+     * @return
+     * @throws IllegalArgumentException
+     */
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         //loadResourceDefine();//防止无法注入问题
@@ -59,13 +66,18 @@ public class MFilterInvocationSecurityMetadataSource implements FilterInvocation
         Iterator<String> ite = resourceMap.keySet().iterator();
         while (ite.hasNext()) {
             String resURL = ite.next();
-            AntPathRequestMatcher urlMatcher = new AntPathRequestMatcher("/**");
+            AntPathRequestMatcher urlMatcher = new AntPathRequestMatcher(resURL);
             if (urlMatcher.matches(request)) {
                 return resourceMap.get(resURL);
             }
         }
         return null;
     }
+
+    /**
+     * 获取所有角色
+     * @return
+     */
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
         Set<ConfigAttribute> allAttributes = new HashSet<>();

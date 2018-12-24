@@ -9,55 +9,48 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "t_bc_user")
+@Table(name = "rbac_user")
 @Entity
 @Data
 @JSONType(ignores = {"roles"})
 public class User extends BaseEntity {
 
-    @Column(name = "u_code")
     private String code;
 
     /**
      * 登录名
      */
-    @Column(name = "u_name")
     private String username;
 
-    @Column(name = "u_password")
     private String password;
 
     /**
      * 姓名
      */
-    private String name;
+    private String nickname;
 
     @Enumerated
-    @Column(name = "u_sex")
     private SexType sex;
 
-    @Column(name = "u_mobile")
     private String mobile;
 
-    @Column(name = "u_tel_phone")
     private String telPhone;
 
-    @Column(name = "u_email")
     private String email;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "u_birth_date")
     private Date birthday;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "u_join_date")
     private Date joinDate;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "u_leave_date")
     private Date leaveDate;
 
-    @Column(name = "u_status")
+    /**
+     * 0 禁用
+     * 1 启用
+     */
     private int status;
 
     @Transient
