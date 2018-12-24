@@ -4,15 +4,13 @@ import com.alibaba.fastjson.annotation.JSONType;
 import org.zechac.atlas.common.jpa.entity.BaseEntity;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 /**
  * 角色
  */
-@Table(name = "t_bc_role")
+@Table(name = "rbac_role")
 @Entity
 @Data
 @JSONType(ignores = {"users"})
@@ -26,5 +24,8 @@ public class Role extends BaseEntity {
     private List<User> users;
 
     @ManyToMany
+    @JoinTable(name = "r_role_resource",
+            joinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "resource_id", referencedColumnName = "id")})
     private List<Resource> resources;
 }

@@ -21,11 +21,8 @@ public class SecurityConfig extends RBACSecurityConfig {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
-        httpSecurity.addFilterAt(mFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+        super.configure(httpSecurity);
         httpSecurity
-            // 由于使用的是JWT，我们这里不需要csrf
-            .csrf().disable()
             // 基于token，所以不需要session
             //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()
@@ -38,8 +35,6 @@ public class SecurityConfig extends RBACSecurityConfig {
             .formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll()
             .and().logout().permitAll();
         //httpSecurity.addFilterBefore(new JwtLoginFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
-        // 禁用缓存
-        httpSecurity.headers().cacheControl();
     }
 
 }
