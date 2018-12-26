@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.zechac.atlas.rbac.security.*;
 
 public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -73,10 +74,17 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public PostAuthenticationEntryPoint authenticationEntryPoint(){
+        PostAuthenticationEntryPoint postAuthenticationEntryPoint=new PostAuthenticationEntryPoint("/login");
+        return postAuthenticationEntryPoint;
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.addFilterAt(loginFilter(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.addFilterAt(mFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
         httpSecurity.csrf().disable().headers().frameOptions().sameOrigin();
+        httpSecurity.exceptionHandling().defaultAuthenticationEntryPointFor(new PostAuthenticationEntryPoint("/login"),new AntPathRequestMatcher("/**"));
     }
 }
