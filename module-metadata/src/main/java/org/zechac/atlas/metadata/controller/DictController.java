@@ -1,79 +1,104 @@
 package org.zechac.atlas.metadata.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.zechac.atlas.common.web.JsonResponse;
 import org.zechac.atlas.common.web.RequestParamUtils;
-import org.zechac.atlas.metadata.entity.Dict;
+import org.zechac.atlas.metadata.entity.DictKey;
+import org.zechac.atlas.metadata.entity.DictValue;
+import org.zechac.atlas.metadata.service.DictKeyService;
 import org.zechac.atlas.metadata.service.DictService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.zechac.atlas.metadata.service.DictValueService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Created by My on 2018-04-02.
  */
-
-/**
- * @author ：王恒腾
- * 类名：
- * 功能：字典接口类
- * 时间：2018-04-02/9:37
- */
 @RestController
-@RequestMapping("dict")
+@RequestMapping("api/metadata/dict")
 public class DictController {
+
     @Autowired
     private DictService dictService;
+    @Autowired
+    private DictKeyService dictKeyService;
+    @Autowired
+    private DictValueService dictValueService;
 
     /**
-     * @author作者：王恒腾 类名：
-     * 功能：字典保存
-     * 时间：2018-04-02/0:09
+     * 保存全部
+     * @param dict
+     * @return
      */
     @RequestMapping("save")
-    public JsonResponse save(@RequestBody Dict dict) {
+    public JsonResponse save(@RequestBody DictKey dict) {
         dictService.save(dict);
         return JsonResponse.success().message("保存成功");
     }
 
+
     /**
-     * @author作者：王恒腾 类名：
-     * 功能：获取字典树，先查询父节点为-1的节点
-     * 时间：2018-04-02/0:26
+     * 保存值
+     * @param dictValue
+     * @return
      */
-    @RequestMapping("tree")
-    public JsonResponse dictTree() {
-        List<Dict> dicts = dictService.buildDictChild("-1");
-        return JsonResponse.success().data(dicts);
+    @RequestMapping("value/save")
+    public JsonResponse valueSave(DictValue dictValue) {
+        dictValueService.save(dictValue);
+        return JsonResponse.success().message("保存成功");
     }
 
     /**
-     * @author作者：王恒腾 类名：
-     * 功能：获取分页
-     * 时间：2018-04-02/0:35
+     * key的page
+     * @param pageable
+     * @param param
+     * @return
      */
-    @RequestMapping("list")
+    @RequestMapping("key/page")
     public JsonResponse list(Pageable pageable, @RequestParam Map param) {
         Map query = RequestParamUtils.mapRequestParam(param, "s_");
-        Page<Dict> pages = dictService.queryByPage(query, pageable);
+        Page<DictKey> pages = dictKeyService.queryByPage(query, pageable);
         return JsonResponse.success().data(pages);
     }
 
-    /**
-     * @author作者：王恒腾 类名：
-     * 功能：根据id获取字典详情
-     * 时间：2018-04-02/0:26
-     */
-    @RequestMapping("info/{id}")
+
+    @RequestMapping("key/{id}/value")
     public JsonResponse getDictById(@PathVariable String id) {
-        Dict dict = dictService.findById(id);
+        DictValue dict = dictValueService.findTopByDictKeyId(id);
         if (dict != null) {
             return JsonResponse.success().data(dict);
         } else {
-            return JsonResponse.fail().message("未找到该字典");
+            return JsonResponse.fail().message("未找到该字典值");
+        }
+    }
+
+    @RequestMapping("key/{id}/values/list")
+    public JsonResponse getDictListById(@PathVariable String id) {
+        Map queryMap=new HashMap();
+        queryMap.put("dictKey__id",id);
+        List<DictValue> dict = dictValueService.queryList(queryMap);
+        if (dict != null) {
+            return JsonResponse.success().data(dict);
+        } else {
+            return JsonResponse.fail().message("未找到该字典值");
+        }
+    }
+
+    @RequestMapping("key/{id}/values/page")
+    public JsonResponse getDictPageById(@PathVariable String id, Pageable pageRequest) {
+        Map queryMap=new HashMap();
+        queryMap.put("dictKey__id",id);
+        Page<DictValue> dict = dictValueService.queryByPage(queryMap,pageRequest);
+        if (dict != null) {
+            return JsonResponse.success().data(dict);
+        } else {
+            return JsonResponse.fail().message("未找到该字典值");
         }
     }
 
