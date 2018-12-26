@@ -36,7 +36,7 @@ public class ResourceController {
     }
 
     /**
-     * 获取模块菜单
+     * 获取子菜单
      *
      * @return
      */
