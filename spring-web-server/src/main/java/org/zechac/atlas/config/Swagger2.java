@@ -19,7 +19,8 @@ public class Swagger2 {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.zechac"))
+                .apis(RequestHandlerSelectors.basePackage("org.zechac.atlas.metadata.controller"))
+                //.apis(RequestHandlerSelectors.basePackage("org.zechac.atlas.rbac.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
