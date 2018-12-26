@@ -53,7 +53,6 @@
     <!--聚合模块 -->
     <modules>
         <module>spring-web-server</module>
-        <module>module-dynamic</module>
         <module>module-metadata</module>
         <module>module-framework</module>
         <module>module-wechat</module>

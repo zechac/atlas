@@ -31,6 +31,11 @@
             <version>${module.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.zechac.atlas</groupId>
+            <artifactId>module-metadata</artifactId>
+            <version>${module.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>

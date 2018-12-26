@@ -1,5 +1,7 @@
 package org.zechac.atlas.metadata.config;
 
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.zechac.atlas.common.repo.BaseRepoImpl;
 import org.zechac.atlas.metadata.jpa.JpaReflector;
 import org.zechac.atlas.metadata.mysql.Reflector;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -9,6 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.persistence.EntityManagerFactory;
 
+@EnableJpaRepositories(basePackages = {"org.zechac.atlas.metadata.repo"},
+        repositoryBaseClass = BaseRepoImpl.class
+)
 @Configuration
 public class MetadataConfig {
 

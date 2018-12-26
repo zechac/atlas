@@ -48,6 +48,11 @@ public class JsonResponse extends ResponseEntity<Map<String, Object>> {
         return this;
     }
 
+    public JsonResponse code(int code) {
+        this.getBody().put("code", code);
+        return this;
+    }
+
     public JsonResponse data(Object o) {
         this.getBody().put("data", o);
         return this;
