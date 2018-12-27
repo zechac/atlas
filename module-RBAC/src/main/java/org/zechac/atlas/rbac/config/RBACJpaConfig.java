@@ -1,6 +1,7 @@
 package org.zechac.atlas.rbac.config;
 
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.zechac.atlas.common.repo.BaseRepoImpl;
@@ -9,5 +10,6 @@ import org.zechac.atlas.common.repo.BaseRepoImpl;
         repositoryBaseClass = BaseRepoImpl.class
 )
 @Configuration
+@EntityScan("org.zechac.atlas.rbac.entity")
 public class RBACJpaConfig {
 }

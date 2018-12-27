@@ -1,5 +1,6 @@
 package org.zechac.atlas.metadata.config;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.zechac.atlas.common.repo.BaseRepoImpl;
 import org.zechac.atlas.metadata.jpa.JpaReflector;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManagerFactory;
         repositoryBaseClass = BaseRepoImpl.class
 )
 @Configuration
+@EntityScan("org.zechac.atlas.metadata.entity")
 public class MetadataConfig {
 
     @Bean
