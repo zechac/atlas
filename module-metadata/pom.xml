@@ -5,7 +5,7 @@
 
     <groupId>org.zechac.atlas</groupId>
     <artifactId>module-metadata</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>元数据模块</name>

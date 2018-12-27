@@ -12,7 +12,7 @@
 
     <!--变量配置 -->
     <properties>
-        <module.version>0.0.1-SNAPSHOT</module.version>
+        <module.version>0.1.0</module.version>
         <!-- lombok版本 -->
         <lombok.version>1.18.4</lombok.version>
 
