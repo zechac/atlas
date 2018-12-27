@@ -25,7 +25,7 @@
         <javax.websocket.version>1.0</javax.websocket.version>
         <fastjson.version>1.2.23</fastjson.version>
         <!--数据库连接池版本-->
-        <druid.version>1.0.13</druid.version>
+        <druid.version>1.1.12</druid.version>
         <spring.boot.version>2.0.1.RELEASE</spring.boot.version>
     </properties>
 
