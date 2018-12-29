@@ -1,6 +1,7 @@
 package org.zechac.atlas.rbac.security;
 
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.ConfigAttribute;
@@ -44,7 +45,6 @@ import java.util.Iterator;
  supports(Class)方法被安全拦截器实现调用，
  包含安全拦截器将显示的AccessDecisionManager支持安全对象的类型。
  */
-@Component
 public class MAccessDecisionManager implements AccessDecisionManager {
 
     public void decide( Authentication authentication, Object object,

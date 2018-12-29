@@ -1,8 +1,10 @@
 package org.zechac.atlas.rbac.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -21,16 +23,25 @@ import org.zechac.atlas.rbac.security.*;
 
 public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private MAccessDecisionManager mAccessDecisionManager;
-    @Autowired
-    private FilterInvocationSecurityMetadataSource  metadataSource;
+    @Bean
+    @ConditionalOnMissingBean(AccessDecisionManager.class)
+    public MAccessDecisionManager mAccessDecisionManager(){
+        MAccessDecisionManager mAccessDecisionManager=new MAccessDecisionManager();
+        return mAccessDecisionManager;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(FilterInvocationSecurityMetadataSource.class)
+    public FilterInvocationSecurityMetadataSource  metadataSource(){
+        MFilterInvocationSecurityMetadataSource mFilterInvocationSecurityMetadataSource=new MFilterInvocationSecurityMetadataSource();
+        return mFilterInvocationSecurityMetadataSource;
+    }
 
     @Bean
     public MFilterSecurityInterceptor mFilterSecurityInterceptor(){
         MFilterSecurityInterceptor mFilterSecurityInterceptor= new MFilterSecurityInterceptor();
-        mFilterSecurityInterceptor.setAccessDecisionManager(mAccessDecisionManager);
-        mFilterSecurityInterceptor.setSecurityMetadataSource(metadataSource);
+        mFilterSecurityInterceptor.setAccessDecisionManager(mAccessDecisionManager());
+        mFilterSecurityInterceptor.setSecurityMetadataSource(metadataSource());
         return mFilterSecurityInterceptor;
     }
 
@@ -44,17 +55,9 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    @ConditionalOnMissingBean(UserDetailsService.class)
     protected UserDetailsService customUserService() {
         return new SecurityUserService();
-    }
-
-    @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-            // 设置UserDetailsService
-            .userDetailsService(customUserService())
-            // 使用BCrypt进行密码的hash
-            .passwordEncoder(passwordEncoder());
     }
 
     // 装载BCrypt密码编码器
@@ -65,7 +68,9 @@ public class RBACSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserService());
+        auth.userDetailsService(customUserService())
+            // 使用BCrypt进行密码的hash
+            .passwordEncoder(passwordEncoder());
     }
 
     @Bean
