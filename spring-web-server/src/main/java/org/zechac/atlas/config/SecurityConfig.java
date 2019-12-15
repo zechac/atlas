@@ -30,7 +30,7 @@ public class SecurityConfig extends RBACSecurityConfig {
             // 允许对于网站静态资源的无授权访问
             // 对于获取token的rest api要允许匿名访问
             .antMatchers("/api/**").hasAnyRole("ROLE_User")
-            .anyRequest().anonymous()
+            .anyRequest().permitAll()
             .and()
             .formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll()
             .and().logout().permitAll();
